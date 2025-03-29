@@ -94,7 +94,7 @@ if berechnen:
         "Davon Tilgung": [df["Tilgung"].sum()],
         "Gesamte Mieteinnahmen": [df["Mieteinnahmen"].sum()],
         "Steuervorteil (real)": [df["Steuerlicher Vorteil (real)"].sum()],
-        "Monatliche Belastung (nach Steuern)": [((df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum() - df["Mieteinnahmen"].sum() - df["Steuerlicher Vorteil (real)"].sum()) / (len(df)*12))]
+        "Monatliche Belastung (nach Steuern)": [((df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum() - df["Mieteinnahmen"].sum() + df["Steuerlicher Vorteil (real)"].sum()) / (len(df)*12))]
     })
 
     st.subheader("Berechnungsergebnisse")
