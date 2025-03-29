@@ -72,26 +72,31 @@ if berechnen:
         steuerlich_absetzbar = mieteinnahmen - gesamtaufwand
         steuerersparnis = gesamtaufwand * steuersatz
         steuervorteil_real = steuerlich_absetzbar * steuersatz
-        reale_monatskosten = (zinskosten + tilgung - mieteinnahmen + betriebskosten - steuervorteil_real) / 12
+        reale_monatskosten = (zinskosten + tilgung + betriebskosten - mieteinnahmen - steuervorteil_real) / 12
         daten.append([
             jahr, round(saldo, 2), round(zinskosten, 2), round(tilgung, 2),
             round(mieteinnahmen, 2), round(abschreibung, 2), round(betriebskosten, 2),
-            round(steuerlich_absetzbar, 2), round(steuerersparnis, 2),
+            
             round(steuervorteil_real, 2), round(reale_monatskosten, 2)
         ])
 
     df = pd.DataFrame(daten, columns=[
         "Jahr", "Restschuld", "Zinskosten", "Tilgung",
         "Mieteinnahmen", "AfA", "Nebenkosten",
-        "Steuerlicher Verlust", "Steuerersparnis",
+        
         "Steuerlicher Vorteil (real)", "Reale Monatskosten"
     ])
 
-    gesamt = df[["Zinskosten", "Tilgung", "Mieteinnahmen", "Nebenkosten", "Steuerlicher Vorteil (real)"]].sum().to_frame().T
-    gesamt["Gesamtaufwand"] = gesamt["Zinskosten"] + gesamt["Nebenkosten"]
-    gesamt["Kapitalfluss (netto)"] = gesamt["Mieteinnahmen"] - gesamt["Gesamtaufwand"]
-    gesamt["Monatliche Kreditrate"] = round(rate, 2)
-    gesamt["Monatliche Mieteinnahmen"] = round(miete_pro_monat, 2)
+    
+gesamt = pd.DataFrame({
+    "Gesamtausgaben (inkl. Tilgung)": [df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum()],
+    "Davon Zinsen": [df["Zinskosten"].sum()],
+    "Davon Nebenkosten": [df["Nebenkosten"].sum()],
+    "Davon Tilgung": [df["Tilgung"].sum()],
+    "Gesamte Mieteinnahmen": [df["Mieteinnahmen"].sum()],
+    "Steuervorteil (real)": [df["Steuerlicher Vorteil (real)"].sum()],
+    "Monatliche Belastung (nach Steuern)": [((df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum() - df["Mieteinnahmen"].sum() - df["Steuerlicher Vorteil (real)"].sum()) / (len(df)*12))]
+})
 
     st.subheader("Berechnungsergebnisse")
     st.dataframe(df.style.format("{:,.2f}"), use_container_width=True)
