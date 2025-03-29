@@ -120,8 +120,9 @@ if berechnen:
         return output.getvalue()
 
     
+    
     st.subheader("📈 Break-Even Analyse: Kaltmiete vs. monatliche Kosten")
-    import matplotlib.pyplot as plt
+    import plotly.graph_objects as go
 
     miete_values = []
     kosten_values = []
@@ -148,14 +149,15 @@ if berechnen:
         miete_values.append(miete_test)
         kosten_values.append(monatl_miete - monatl_kosten)
 
-    fig, ax = plt.subplots()
-    ax.plot(miete_values, kosten_values, label="Überschuss (Miete - Kosten)")
-    ax.axhline(0, color="red", linestyle="--", label="Break-even")
-    ax.set_xlabel("Kaltmiete pro m² (€)")
-    ax.set_ylabel("Monatlicher Überschuss (€)")
-    ax.set_title("Break-even-Analyse: Miete pro m²")
-    ax.legend()
-    st.pyplot(fig)
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=miete_values, y=kosten_values, mode='lines+markers', name='Überschuss (Miete - Kosten)'))
+    fig.add_hline(y=0, line=dict(dash='dash', color='red'), annotation_text="Break-even", annotation_position="bottom right")
+    fig.update_layout(title="Break-even-Analyse: Miete pro m²",
+                      xaxis_title="Kaltmiete pro m² (€)",
+                      yaxis_title="Monatlicher Überschuss (€)",
+                      showlegend=True)
+    st.plotly_chart(fig, use_container_width=True)
+
 
     excel_data = convert_df_to_excel(df)
     st.download_button("Excel-Datei herunterladen", data=excel_data, file_name="Immobilienmodell.xlsx")
