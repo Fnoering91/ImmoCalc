@@ -14,7 +14,7 @@ with st.expander("**Spaltenbeschreibung anzeigen**"):
     - **AfA**: Abschreibung, 2 % auf 80 % des Kaufpreises  
     - **Nebenkosten**: Nicht umlagefähige Kosten (jährlich)  
     - **Steuerlicher Vorteil (real)**: steuerlicher Verlust × Steuersatz  
-    - **Reale Monatskosten**: (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen + Steuervorteil ) / 12
+    - **Reale Monatskosten**: (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12
     """)
 
 with st.form("eingabe_formular"):
@@ -87,6 +87,7 @@ if berechnen:
     ])
 
     gesamt = pd.DataFrame({
+        "Monatliche Kreditrate": [round(rate, 2)],
         "Gesamtausgaben (inkl. Tilgung)": [df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum()],
         "Davon Zinsen": [df["Zinskosten"].sum()],
         "Davon Nebenkosten": [df["Nebenkosten"].sum()],
@@ -117,6 +118,44 @@ if berechnen:
             data.to_excel(writer, sheet_name="Jahrestabelle", index=False)
             gesamt.to_excel(writer, sheet_name="Summen", index=False)
         return output.getvalue()
+
+    
+    st.subheader("📈 Break-Even Analyse: Kaltmiete vs. monatliche Kosten")
+    import matplotlib.pyplot as plt
+
+    miete_values = []
+    kosten_values = []
+
+    for miete_test in range(5, 25):
+        test_miete_pro_monat = wohnfläche * miete_test
+        mieteinnahmen_total = 0
+        saldo_test = darlehen
+        for jahr in range(1, laufzeit_jahre + 1):
+            for monat in range(12):
+                zinsanteil = saldo_test * zins_monat
+                tilgungsanteil = rate - zinsanteil
+                saldo_test -= tilgungsanteil
+            test_miete_pro_monat *= (1 + mieterhoehung)
+            mieteinnahmen_total += test_miete_pro_monat * 12
+
+        gesamt_zins = df["Zinskosten"].sum()
+        gesamt_tilgung = df["Tilgung"].sum()
+        gesamt_nebenkosten = df["Nebenkosten"].sum()
+        gesamtausgaben = gesamt_zins + gesamt_tilgung + gesamt_nebenkosten
+        monatl_kosten = gesamtausgaben / (laufzeit_jahre * 12)
+        monatl_miete = mieteinnahmen_total / (laufzeit_jahre * 12)
+
+        miete_values.append(miete_test)
+        kosten_values.append(monatl_miete - monatl_kosten)
+
+    fig, ax = plt.subplots()
+    ax.plot(miete_values, kosten_values, label="Überschuss (Miete - Kosten)")
+    ax.axhline(0, color="red", linestyle="--", label="Break-even")
+    ax.set_xlabel("Kaltmiete pro m² (€)")
+    ax.set_ylabel("Monatlicher Überschuss (€)")
+    ax.set_title("Break-even-Analyse: Miete pro m²")
+    ax.legend()
+    st.pyplot(fig)
 
     excel_data = convert_df_to_excel(df)
     st.download_button("Excel-Datei herunterladen", data=excel_data, file_name="Immobilienmodell.xlsx")
