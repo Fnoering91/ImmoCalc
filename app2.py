@@ -14,7 +14,7 @@ with st.expander("**Spaltenbeschreibung anzeigen**"):
     - **AfA**: Abschreibung, 2 % auf 80 % des Kaufpreises  
     - **Nebenkosten**: Nicht umlagefähige Kosten (jährlich)  
     - **Steuerlicher Vorteil (real)**: steuerlicher Verlust × Steuersatz  
-    - **Reale Monatskosten**: (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12
+    - **Reale Monatskosten**: (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen + Steuervorteil ) / 12
     """)
 
 with st.form("eingabe_formular"):
@@ -73,7 +73,7 @@ if berechnen:
         betriebskosten = nebenkosten * 12
         steuerlich_absetzbar = mieteinnahmen - (zinskosten + abschreibung + betriebskosten)
         steuervorteil_real = steuerlich_absetzbar * steuersatz
-        reale_monatskosten = (zinskosten + tilgung + betriebskosten - mieteinnahmen - steuervorteil_real) / 12
+        reale_monatskosten = (zinskosten + tilgung + betriebskosten - mieteinnahmen + steuervorteil_real) / 12
         daten.append([
             jahr, round(saldo, 2), round(zinskosten, 2), round(tilgung, 2),
             round(mieteinnahmen, 2), round(abschreibung, 2), round(betriebskosten, 2),
