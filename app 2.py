@@ -5,6 +5,20 @@ import pandas as pd
 st.set_page_config(page_title="Immobilien-Rechner", layout="centered")
 st.title("Immobilien-Investment Rechner")
 
+with st.expander("**Spaltenbeschreibung anzeigen**"):
+    st.markdown("""
+    - **Restschuld**: Verbleibender Kreditbetrag am Jahresende  
+    - **Zinskosten**: Im Jahr gezahlte Kreditzinsen  
+    - **Tilgung**: Im Jahr getilgter Kreditbetrag  
+    - **Mieteinnahmen**: Jahresmiete (Wohnfläche × Miete × 12)  
+    - **AfA**: Abschreibung, 2 % auf 80 % des Kaufpreises  
+    - **Nebenkosten**: Nicht umlagefähige Kosten (jährlich)  
+    - **Steuerlicher Verlust**: Einnahmen – (Zinsen + AfA + Nebenkosten)  
+    - **Steuerersparnis**: (Zinsen + AfA + Nebenkosten) × Steuersatz  
+    - **Steuerlicher Vorteil (real)**: Steuerlicher Verlust × Steuersatz  
+    - **Reale Monatskosten**: ((Zinsen + Tilgung – Mieteinnahmen + Nebenkosten – Steuerersparnis) / 12)
+    """)
+
 with st.form("eingabe_formular"):
     st.subheader("Berechnungsgrundlagen")
 
@@ -57,27 +71,42 @@ if berechnen:
         gesamtaufwand = zinskosten + abschreibung + betriebskosten
         steuerlich_absetzbar = mieteinnahmen - gesamtaufwand
         steuerersparnis = gesamtaufwand * steuersatz
+        steuervorteil_real = steuerlich_absetzbar * steuersatz
+        reale_monatskosten = (zinskosten + tilgung - mieteinnahmen + betriebskosten - steuervorteil_real) / 12
         daten.append([
             jahr, round(saldo, 2), round(zinskosten, 2), round(tilgung, 2),
             round(mieteinnahmen, 2), round(abschreibung, 2), round(betriebskosten, 2),
-            round(steuerlich_absetzbar, 2), round(steuerersparnis, 2)
+            round(steuerlich_absetzbar, 2), round(steuerersparnis, 2),
+            round(steuervorteil_real, 2), round(reale_monatskosten, 2)
         ])
 
     df = pd.DataFrame(daten, columns=[
         "Jahr", "Restschuld", "Zinskosten", "Tilgung",
         "Mieteinnahmen", "AfA", "Nebenkosten",
-        "Steuerlicher Verlust", "Steuerersparnis"
+        "Steuerlicher Verlust", "Steuerersparnis",
+        "Steuerlicher Vorteil (real)", "Reale Monatskosten"
     ])
 
-    gesamt = df[["Zinskosten", "Tilgung", "Mieteinnahmen", "Nebenkosten", "Steuerersparnis"]].sum().to_frame().T
+    gesamt = df[["Zinskosten", "Tilgung", "Mieteinnahmen", "Nebenkosten", "Steuerlicher Vorteil (real)"]].sum().to_frame().T
     gesamt["Gesamtaufwand"] = gesamt["Zinskosten"] + gesamt["Nebenkosten"]
     gesamt["Kapitalfluss (netto)"] = gesamt["Mieteinnahmen"] - gesamt["Gesamtaufwand"]
+    gesamt["Monatliche Kreditrate"] = round(rate, 2)
+    gesamt["Monatliche Mieteinnahmen"] = round(miete_pro_monat, 2)
 
     st.subheader("Berechnungsergebnisse")
     st.dataframe(df.style.format("{:,.2f}"), use_container_width=True)
 
-    st.subheader("Summen über die Laufzeit")
-    st.dataframe(gesamt.style.format("{:,.2f}"), use_container_width=True)
+    with st.expander("**Zusammenfassung & Berechnungsgrundlagen**"):
+        st.dataframe(gesamt.style.format("{:,.2f}"), use_container_width=True)
+        st.markdown("""
+        **Berechnungsvorschriften:**
+        - Monatliche Kreditrate: konstante Rate eines Annuitätendarlehens
+        - Gesamtaufwand: Zinskosten + nicht umlagefähige Nebenkosten
+        - Kapitalfluss (netto): Mieteinnahmen – Gesamtaufwand
+        - Steuerlicher Vorteil (real): steuerlicher Verlust × Steuersatz
+        - Reale Monatskosten: ((Zinsen + Tilgung – Mieteinnahmen + Nebenkosten – Steuerersparnis) / 12)
+        - AfA: 2 % auf 80 % des Kaufpreises (jährlich konstant)
+        """)
 
     st.subheader("Download als Excel-Datei")
     def convert_df_to_excel(data: pd.DataFrame):
