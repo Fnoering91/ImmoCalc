@@ -168,8 +168,7 @@ if berechnen:
 import openai
 import streamlit as st
 
-# OpenAI API Key aus secrets.toml
-openai.api_key = st.secrets["openai"]["api_key"]
+client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
 def experteneinschaetzung_gpt(berechnungsdaten):
     system_prompt = (
@@ -181,7 +180,7 @@ def experteneinschaetzung_gpt(berechnungsdaten):
     user_prompt = f"Hier sind die Eckdaten der Finanzierung:\n{berechnungsdaten}"
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -190,7 +189,7 @@ def experteneinschaetzung_gpt(berechnungsdaten):
             temperature=0.7,
             max_tokens=800
         )
-        return response['choices'][0]['message']['content']
+        return response.choices[0].message.content
     except Exception as e:
         return f"Fehler beim Abrufen der Experteneinschätzung: {e}"
 
