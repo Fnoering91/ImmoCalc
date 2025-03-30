@@ -161,3 +161,56 @@ if berechnen:
 
     excel_data = convert_df_to_excel(df)
     st.download_button("Excel-Datei herunterladen", data=excel_data, file_name="Immobilienmodell.xlsx")
+
+
+
+# --- Experteneinschätzung mit GPT einholen ---
+import openai
+import streamlit as st
+
+# OpenAI API Key aus secrets.toml
+openai.api_key = st.secrets["openai"]["api_key"]
+
+def experteneinschaetzung_gpt(berechnungsdaten):
+    system_prompt = (
+        "Du bist ein Immobilienfinanzierungsexperte. "
+        "Bewerte die Tragfähigkeit und Wirtschaftlichkeit folgender Immobilienfinanzierung. "
+        "Weise auf Risiken hin, nenne Verbesserungsvorschläge und vergleiche ggf. mit typischen Finanzierungskonzepten."
+    )
+
+    user_prompt = f"Hier sind die Eckdaten der Finanzierung:\n{berechnungsdaten}"
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.7,
+            max_tokens=800
+        )
+        return response['choices'][0]['message']['content']
+    except Exception as e:
+        return f"Fehler beim Abrufen der Experteneinschätzung: {e}"
+
+
+
+# --- Experteneinschätzung anzeigen ---
+berechnungsdaten = {
+    "Kaufpreis": kaufpreis,
+    "Eigenkapital": eigenkapital,
+    "Zinssatz": zinssatz,
+    "Laufzeit (Jahre)": laufzeit_jahre,
+    "Kaufnebenkosten (%)": nebenkosten_kauf,
+    "Wohnfläche (m²)": wohnfläche,
+    "Reale Monatskosten (€)": round(reale_monatskosten, 2) if "reale_monatskosten" in locals() else None,
+    "Mieteinnahmen (jährlich €)": round(mieteinnahmen, 2) if "mieteinnahmen" in locals() else None,
+    "Steuervorteil (real €)": round(steuerlicher_vorteil, 2) if "steuerlicher_vorteil" in locals() else None
+}
+
+st.markdown("---")
+st.subheader("Experteneinschätzung (automatisch durch GPT)")
+with st.spinner("Wird analysiert..."):
+    expertenmeinung = experteneinschaetzung_gpt(berechnungsdaten)
+st.info(expertenmeinung)
