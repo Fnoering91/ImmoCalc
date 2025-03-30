@@ -96,6 +96,7 @@ if berechnen:
         "Steuervorteil (real)": [df["Steuerlicher Vorteil (real)"].sum()],
         "Monatliche Belastung (nach Steuern)": [((df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum() - df["Mieteinnahmen"].sum() + df["Steuerlicher Vorteil (real)"].sum()) / (len(df)*12))]
     })
+    steuerlicher_vorteil = df["Steuerlicher Vorteil (real)"].sum()
 
     st.subheader("Berechnungsergebnisse")
     st.dataframe(df.style.format("{:,.2f}"), use_container_width=True)
@@ -181,7 +182,7 @@ def experteneinschaetzung_gpt(berechnungsdaten):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
