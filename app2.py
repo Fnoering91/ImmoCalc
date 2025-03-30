@@ -96,7 +96,7 @@ if berechnen:
         "Steuervorteil (real)": [df["Steuerlicher Vorteil (real)"].sum()],
         "Monatliche Belastung (nach Steuern)": [((df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum() - df["Mieteinnahmen"].sum() + df["Steuerlicher Vorteil (real)"].sum()) / (len(df)*12))]
     })
-    steuerlicher_vorteil = df["Steuerlicher Vorteil (real)"].sum()
+    steuerlicher_vorteil = -df["Steuerlicher Vorteil (real)"].sum()
 
     st.subheader("Berechnungsergebnisse")
     st.dataframe(df.style.format("{:,.2f}"), use_container_width=True)
