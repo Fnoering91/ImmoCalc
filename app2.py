@@ -100,22 +100,25 @@ if berechnen:
 
     st.subheader("Berechnungsergebnisse")
     st.dataframe(df.style.format("{:,.2f}"), use_container_width=True)
-
+    
     with st.expander("**Zusammenfassung **"):
         # --- Strukturierte Zusammenfassung ---
 
         # st.markdown("## 📊 Zusammenfassung der Finanzierung")
         
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         with col1:
             st.metric("Monatliche Kreditrate", f"{round(rate, 2):.2f} €", help="= Zinsen + Tilgung")
-            st.metric("Reale Monatskosten", f"{reale_monatskosten:.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12")
+            st.metric("⌀ monatliche Mieteinnahmen", f"{round(df["Mieteinnahmen"].sum()/laufzeit_jahre, 2):.2f} €", help="= Mietpreis pro qm * Wohnungsgröße (Im Durchschnitt bei dynamischer Mietpreissteigerung)")
+            st.metric("⌀ monatliche Belastung abzüglich Mieteinnahmen & Steuern", f"{round(df["Reale Monatskosten"].sum()/laufzeit_jahre, 2):.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12 (Durchschnitt über Laufzeit, da sich bis auf die Nebenkosten alle Werte dynamisch verändern)")
         
         with col2:
-            st.metric("Jährliche Mieteinnahmen", f"{mieteinnahmen:.2f} €", help="Basierend auf Wohnfläche × Kaltmiete × 12")
-        
-        with col3:
-            st.metric("Jährlicher Steuervorteil", f"{steuerlicher_vorteil:.2f} €", help="Verlust × Steuersatz")
+            st.metric("Gesamtkosten für Kredit und Vermietung ", f"{ [df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum()]:.2f} €", help=" Summe der Zinsen, Tilgung und Nebenkosten für Vermietung über die gesamte Laufzeit")
+            st.metric("Davon Tilgung", f"{ [df["Tilgung"].sum()]:.2f} €", help=" Tilgung über die gesamte Laufzeit")
+            st.metric("Davon Zinskosten", f"{ [df["Zinskosten"].sum()]:.2f} €", help=" Zinskosten über die gesamte Laufzeit")
+            st.metric("Davon Nebenkosten", f"{ [df["Nebenkosten"].sum()]:.2f} €", help=" Nebenkosten über die gesamte Laufzeit")
+            st.metric("Mieteinnahmen über Laufzeit", f"{ [df["Mieteinnahmen"].sum()]:.2f} €", help=" Mieteinnahmen über die gesamte Laufzeit")            
+            st.metric("Steuervorteil über Laufzeit", f"{df["Steuerlicher Vorteil (real)"].sum():.2f} €", help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
         
         # st.markdown("---")
         # st.subheader("🔢 Monatswerte")
@@ -144,14 +147,15 @@ if berechnen:
         #     ax.set_title("Entwicklung der Restschuld über die Jahre")
         #     ax.grid(True)
         #     st.pyplot(fig)
+        
         st.dataframe(gesamt.style.format("{:,.2f}"), use_container_width=True)
-        st.markdown("""
-        **Annahmen & Hinweise:**
-        - Kaufnebenkosten: z.B. Grunderwerbsteuer, Notar, Makler (Ø ~10 %)
-        - Dynamische Mieterhöhung jährlich (z.B. 1 %)
-        - AfA: 2 % auf 80 % des Kaufpreises
-        - Steuerlicher Vorteil: reale Entlastung durch Verlustverrechnung
-        """)
+        # st.markdown("""
+        # **Annahmen & Hinweise:**
+        # - Kaufnebenkosten: z.B. Grunderwerbsteuer, Notar, Makler (Ø ~10 %)
+        # - Dynamische Mieterhöhung jährlich (z.B. 1 %)
+        # - AfA: 2 % auf 80 % des Kaufpreises
+        # - Steuerlicher Vorteil: reale Entlastung durch Verlustverrechnung
+        # """)
 
     st.subheader("Download als Excel-Datei")
     def convert_df_to_excel(data: pd.DataFrame):
