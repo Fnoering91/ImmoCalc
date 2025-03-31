@@ -29,6 +29,7 @@ with st.form("eingabe_formular"):
         laufzeit_jahre = st.number_input("Laufzeit (Jahre)", min_value=5, max_value=40, value=20, help="= Laufzeit des Kredits")
         nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=10.0, help="= prozentualer Wert des Kaufpreises -> Grunderwerbsteuer (3,5-6,5%), Maklerkosten (5-7%) sowie Notar- und Grundbuchkosten (1-1,5%)")
         region = st.text_input("Region der Immobilie", value = "Hamburg", help="= Stadt oder Ballungsraum. Wird nur für die Expertenmeinung verwendet.")
+        experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
 
     with col2:
         wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=120, help="")
@@ -281,6 +282,9 @@ if berechnen:
     
     st.markdown("---")
     st.subheader("Experteneinschätzung (automatisch durch GPT)")
-    with st.spinner("Wird analysiert..."):
-        expertenmeinung = experteneinschaetzung_gpt(berechnungsdaten)
-    st.info(expertenmeinung)
+    if experteneinschaetzung_aktiv:
+        with st.spinner("Wird analysiert..."):
+            expertenmeinung = experteneinschaetzung_gpt(berechnungsdaten)
+        st.info(expertenmeinung)
+    else:
+        st.info("Die GPT-Experteneinschätzung wurde nicht aktiviert.")
