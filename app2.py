@@ -28,6 +28,7 @@ with st.form("eingabe_formular"):
         zinssatz = st.number_input("Zinssatz (p.a.)", min_value=0.1, max_value=10.0, value=4.0, step=0.1, help="= Zinssatz für Kredit")
         laufzeit_jahre = st.number_input("Laufzeit (Jahre)", min_value=5, max_value=40, value=20, help="= Laufzeit des Kredits")
         nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=10.0, help="= prozentualer Wert des Kaufpreises -> Grunderwerbsteuer (3,5-6,5%), Maklerkosten (5-7%) sowie Notar- und Grundbuchkosten (1-1,5%)")
+        region = st.text_input("Region der Immobilie", value = "Hamburg", help="= Stadt oder Ballungsraum. Wird nur für die Expertenmeinung verwendet.")
 
     with col2:
         wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=120, help="")
@@ -35,6 +36,7 @@ with st.form("eingabe_formular"):
         mieterhoehung = st.number_input("Jährliche Mieterhöhung (%)", min_value=0.0, max_value=10.0, value=1.0, help="")
         nebenkosten = st.number_input("Nicht umlagefähige Nebenkosten (€/Monat)", min_value=0, value=250, help="Verwaltungs- oder Instandhaltungskosten sowie einmalige Ausgaben, etwa die Neuanlage eines Gartens oder die Installation neuer Feuerlöscher")
         steuersatz = st.number_input("Persönlicher Steuersatz (%)", min_value=0.0, max_value=50.0, value=42.0, help="")
+        stadtteil = st.text_input("Stadtteil der Immobilie", value = "Bergedorf", help="Wird nur für die Expertenmeinung verwendet.")
 
     berechnen = st.form_submit_button("Neu berechnen")
 
@@ -166,7 +168,7 @@ if berechnen:
             st.metric("Zinslast gesamt", f"{ zinslast*100:.2f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")            
   
         with col23:
-            steuerquote = df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
+            steuerquote = -df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
             st.metric("Steuerquote", f"{ steuerquote*100:.2f} %", help="Anteil der Gesamtkosten, die durch Steuern reduziert werden können.")   
             mietrendite = df["Mieteinnahmen"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
             st.metric("Mietrendite", f"{ mietrendite*100:.2f} %", help="Verhältnis von Mieteinnahmen zu Gesamtkosten der Finanzierung.")   
@@ -235,6 +237,7 @@ if berechnen:
             "Du bist ein Immobilienfinanzierungsexperte. "
             "Bewerte die Tragfähigkeit und Wirtschaftlichkeit folgender Immobilienfinanzierung. "
             "Weise auf Risiken hin, nenne Verbesserungsvorschläge und vergleiche ggf. mit typischen Finanzierungskonzepten."
+            "Bewerte den Immobilienkauf auch auf Basis der Lage der Immobilie. Ziehe die wenn möglich online Statistiken zu Miet- und Kaufpreisen zu dem angegebenen Ort und beziehe sie in deine Bewertung mit ein. Betrachte auch ob die Lage langfristige Wertzuwächse der Immobilie ermöglicht."
         )
     
         user_prompt = f"Hier sind die Eckdaten der Finanzierung:\n{berechnungsdaten}"
@@ -271,7 +274,9 @@ if berechnen:
         "Gesamtkosten Zinskosten": df["Zinskosten"].sum(),
         "Gesamtkosten Nebenkosten": df["Nebenkosten"].sum(),
         "Mieteinnahmen über Laufzeit": df["Mieteinnahmen"].sum(),
-        "Steuervorteil über Laufzeit": df["Steuerlicher Vorteil (real)"].sum(),
+        "Steuervorteil über Laufzeit": -df["Steuerlicher Vorteil (real)"].sum(),
+        "Region der Immobilie": region ,
+        "Stadtteil der Immobilie": stadtteil,
     }
     
     st.markdown("---")
