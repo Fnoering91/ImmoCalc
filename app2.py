@@ -224,58 +224,58 @@ if berechnen:
     st.plotly_chart(fig, use_container_width=True)
 
 
-# --- Experteneinschätzung mit GPT einholen ---
-import openai
-import streamlit as st
-
-client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
-
-def experteneinschaetzung_gpt(berechnungsdaten):
-    system_prompt = (
-        "Du bist ein Immobilienfinanzierungsexperte. "
-        "Bewerte die Tragfähigkeit und Wirtschaftlichkeit folgender Immobilienfinanzierung. "
-        "Weise auf Risiken hin, nenne Verbesserungsvorschläge und vergleiche ggf. mit typischen Finanzierungskonzepten."
-    )
-
-    user_prompt = f"Hier sind die Eckdaten der Finanzierung:\n{berechnungsdaten}"
-
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            temperature=0.7,
-            max_tokens=800
+    # --- Experteneinschätzung mit GPT einholen ---
+    import openai
+    import streamlit as st
+    
+    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+    
+    def experteneinschaetzung_gpt(berechnungsdaten):
+        system_prompt = (
+            "Du bist ein Immobilienfinanzierungsexperte. "
+            "Bewerte die Tragfähigkeit und Wirtschaftlichkeit folgender Immobilienfinanzierung. "
+            "Weise auf Risiken hin, nenne Verbesserungsvorschläge und vergleiche ggf. mit typischen Finanzierungskonzepten."
         )
-        return response.choices[0].message.content
-    except Exception as e:
-        return f"Fehler beim Abrufen der Experteneinschätzung: {e}"
-
-
-
-# --- Experteneinschätzung anzeigen ---
-berechnungsdaten = {
-    "Kaufpreis": kaufpreis,
-    "Eigenkapital": eigenkapital,
-    "Zinssatz": zinssatz,
-    "Laufzeit (Jahre)": laufzeit_jahre,
-    "Kaufnebenkosten (%)": nebenkosten_kauf,
-    "Wohnfläche (m²)": wohnfläche,
-    "Kreditrate pro Monat": rate,
-    "⌀ mtl. Mieteinnahmen": df["Mieteinnahmen"].sum()/laufzeit_jahre/12,
-    "⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern": df["Reale Monatskosten"].sum()/laufzeit_jahre,
-    "Gesamtkosten Kredit & Vermietung": df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum(),
-    "Gesamtkosten Tilgung": df["Tilgung"].sum(),
-    "Gesamtkosten Zinskosten": df["Zinskosten"].sum(),
-    "Gesamtkosten Nebenkosten": df["Nebenkosten"].sum(),
-    "Mieteinnahmen über Laufzeit": df["Mieteinnahmen"].sum(),
-    "Steuervorteil über Laufzeit": df["Steuerlicher Vorteil (real)"].sum(),
-}
-
-st.markdown("---")
-st.subheader("Experteneinschätzung (automatisch durch GPT)")
-with st.spinner("Wird analysiert..."):
-    expertenmeinung = experteneinschaetzung_gpt(berechnungsdaten)
-st.info(expertenmeinung)
+    
+        user_prompt = f"Hier sind die Eckdaten der Finanzierung:\n{berechnungsdaten}"
+    
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.7,
+                max_tokens=800
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            return f"Fehler beim Abrufen der Experteneinschätzung: {e}"
+    
+    
+    
+    # --- Experteneinschätzung anzeigen ---
+    berechnungsdaten = {
+        "Kaufpreis": kaufpreis,
+        "Eigenkapital": eigenkapital,
+        "Zinssatz": zinssatz,
+        "Laufzeit (Jahre)": laufzeit_jahre,
+        "Kaufnebenkosten (%)": nebenkosten_kauf,
+        "Wohnfläche (m²)": wohnfläche,
+        "Kreditrate pro Monat": rate,
+        "⌀ mtl. Mieteinnahmen": df["Mieteinnahmen"].sum()/laufzeit_jahre/12,
+        "⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern": df["Reale Monatskosten"].sum()/laufzeit_jahre,
+        "Gesamtkosten Kredit & Vermietung": df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum(),
+        "Gesamtkosten Tilgung": df["Tilgung"].sum(),
+        "Gesamtkosten Zinskosten": df["Zinskosten"].sum(),
+        "Gesamtkosten Nebenkosten": df["Nebenkosten"].sum(),
+        "Mieteinnahmen über Laufzeit": df["Mieteinnahmen"].sum(),
+        "Steuervorteil über Laufzeit": df["Steuerlicher Vorteil (real)"].sum(),
+    }
+    
+    st.markdown("---")
+    st.subheader("Experteneinschätzung (automatisch durch GPT)")
+    with st.spinner("Wird analysiert..."):
+        expertenmeinung = experteneinschaetzung_gpt(berechnungsdaten)
+    st.info(expertenmeinung)
