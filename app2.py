@@ -102,14 +102,55 @@ if berechnen:
     st.dataframe(df.style.format("{:,.2f}"), use_container_width=True)
 
     with st.expander("**Zusammenfassung & Berechnungsgrundlagen**"):
-        st.dataframe(gesamt.style.format("{:,.2f}"), use_container_width=True)
-        st.markdown("""
-        **Annahmen & Hinweise:**
-        - Kaufnebenkosten: z.B. Grunderwerbsteuer, Notar, Makler (Ø ~10 %)
-        - Dynamische Mieterhöhung jährlich (z.B. 1 %)
-        - AfA: 2 % auf 80 % des Kaufpreises
-        - Steuerlicher Vorteil: reale Entlastung durch Verlustverrechnung
-        """)
+        # --- Strukturierte Zusammenfassung ---
+
+        st.markdown("## 📊 Zusammenfassung der Finanzierung")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Reale Monatskosten", f"{reale_monatskosten:.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12")
+        
+        with col2:
+            st.metric("Jährliche Mieteinnahmen", f"{mieteinnahmen:.2f} €", help="Basierend auf Wohnfläche × Kaltmiete × 12")
+        
+        with col3:
+            st.metric("Jährlicher Steuervorteil", f"{steuerlicher_vorteil:.2f} €", help="Verlust × Steuersatz")
+        
+        st.markdown("---")
+        st.subheader("🔢 Monatswerte")
+        st.write(f"- **Reale Monatskosten**: {reale_monatskosten:.2f} €")
+        st.write(f"- **Mieteinnahmen pro Monat**: {mieteinnahmen / 12:.2f} €")
+        
+        st.subheader("📅 Jahreswerte")
+        st.write(f"- **Mieteinnahmen (brutto)**: {mieteinnahmen:.2f} €")
+        st.write(f"- **AfA**: {afa:.2f} €")
+        st.write(f"- **Nebenkosten (nicht umlagefähig)**: {nebenkosten:.2f} €")
+        st.write(f"- **Steuervorteil (realistisch)**: {steuerlicher_vorteil:.2f} €")
+        
+        st.subheader(f"📈 Gesamtwerte über {laufzeit_jahre} Jahre")
+        gesamt_steuer_vorteil = steuerlicher_vorteil * laufzeit_jahre
+        st.write(f"- **Gesamter Steuervorteil**: {gesamt_steuer_vorteil:.2f} €")
+        
+        # Optionales einfaches Diagramm (z. B. Verlauf der Restschuld)
+        import matplotlib.pyplot as plt
+        
+        if 'df' in locals() and 'Restschuld' in df.columns:
+            st.markdown("### 📉 Restschuld-Verlauf")
+            fig, ax = plt.subplots()
+            ax.plot(df['Jahr'], df['Restschuld'], marker='o')
+            ax.set_xlabel("Jahr")
+            ax.set_ylabel("Restschuld (€)")
+            ax.set_title("Entwicklung der Restschuld über die Jahre")
+            ax.grid(True)
+            st.pyplot(fig)
+        # st.dataframe(gesamt.style.format("{:,.2f}"), use_container_width=True)
+        # st.markdown("""
+        # **Annahmen & Hinweise:**
+        # - Kaufnebenkosten: z.B. Grunderwerbsteuer, Notar, Makler (Ø ~10 %)
+        # - Dynamische Mieterhöhung jährlich (z.B. 1 %)
+        # - AfA: 2 % auf 80 % des Kaufpreises
+        # - Steuerlicher Vorteil: reale Entlastung durch Verlustverrechnung
+        # """)
 
     st.subheader("Download als Excel-Datei")
     def convert_df_to_excel(data: pd.DataFrame):
