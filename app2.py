@@ -113,11 +113,11 @@ if berechnen:
             st.metric("⌀ monatliche Belastung abzüglich Mieteinnahmen & Steuern", f"{round(df["Reale Monatskosten"].sum()/laufzeit_jahre, 2):.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12 (Durchschnitt über Laufzeit, da sich bis auf die Nebenkosten alle Werte dynamisch verändern)")
         
         with col2:
-            st.metric("Gesamtkosten für Kredit und Vermietung ", f"{ [df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum()]:.2f} €", help=" Summe der Zinsen, Tilgung und Nebenkosten für Vermietung über die gesamte Laufzeit")
-            st.metric("Davon Tilgung", f"{ [df["Tilgung"].sum()]:.2f} €", help=" Tilgung über die gesamte Laufzeit")
-            st.metric("Davon Zinskosten", f"{ [df["Zinskosten"].sum()]:.2f} €", help=" Zinskosten über die gesamte Laufzeit")
-            st.metric("Davon Nebenkosten", f"{ [df["Nebenkosten"].sum()]:.2f} €", help=" Nebenkosten über die gesamte Laufzeit")
-            st.metric("Mieteinnahmen über Laufzeit", f"{ [df["Mieteinnahmen"].sum()]:.2f} €", help=" Mieteinnahmen über die gesamte Laufzeit")            
+            st.metric("Gesamtkosten für Kredit und Vermietung ", f"{ df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum():.2f} €", help=" Summe der Zinsen, Tilgung und Nebenkosten für Vermietung über die gesamte Laufzeit")
+            st.metric("Davon Tilgung", f"{ df["Tilgung"].sum():.2f} €", help=" Tilgung über die gesamte Laufzeit")
+            st.metric("Davon Zinskosten", f"{ df["Zinskosten"].sum():.2f} €", help=" Zinskosten über die gesamte Laufzeit")
+            st.metric("Davon Nebenkosten", f"{ df["Nebenkosten"].sum():.2f} €", help=" Nebenkosten über die gesamte Laufzeit")
+            st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():.2f} €", help=" Mieteinnahmen über die gesamte Laufzeit")            
             st.metric("Steuervorteil über Laufzeit", f"{df["Steuerlicher Vorteil (real)"].sum():.2f} €", help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
         
         # st.markdown("---")
