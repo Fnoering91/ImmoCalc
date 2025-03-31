@@ -27,7 +27,7 @@ with st.form("eingabe_formular"):
         eigenkapital = st.number_input("Eigenkapital (€)", min_value=0, value=50000, step=10000, help="= Eigenkapital, welches den notwendigen Kreditrahmen reduziert")
         zinssatz = st.number_input("Zinssatz (p.a.)", min_value=0.1, max_value=10.0, value=4.0, step=0.1, help="= Zinssatz für Kredit")
         laufzeit_jahre = st.number_input("Laufzeit (Jahre)", min_value=5, max_value=40, value=20, help="= Laufzeit des Kredits")
-        nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=10.0, , help="= prozentualer Wert des Kaufpreises -> Grunderwerbsteuer (3,5-6,5%), Maklerkosten (5-7%) sowie Notar- und Grundbuchkosten (1-1,5%)")
+        nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=10.0, help="= prozentualer Wert des Kaufpreises -> Grunderwerbsteuer (3,5-6,5%), Maklerkosten (5-7%) sowie Notar- und Grundbuchkosten (1-1,5%)")
 
     with col2:
         wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=120, help="")
