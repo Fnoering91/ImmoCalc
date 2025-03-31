@@ -159,7 +159,7 @@ if berechnen:
 
 
         col21, col22, col23 = st.columns(3)
-        with col21:
+        # with col21:
         
         with col22:
             zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
