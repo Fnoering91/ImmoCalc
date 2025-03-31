@@ -164,7 +164,7 @@ if berechnen:
         col21, col22, col23 = st.columns(3)
         with col21:
             preisproqm = kaufpreis/wohnfläche
-            st.metric("Preis pro m²", f"{ preisproqm:.2f} %", help="Kaufpreis pro Quadratmeter Wohnfläche")            
+            st.metric("Preis pro m²", f"{ preisproqm:,.2f} €", help="Kaufpreis pro Quadratmeter Wohnfläche")            
 
         with col22:
             zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
