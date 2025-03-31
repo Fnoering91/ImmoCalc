@@ -23,17 +23,17 @@ with st.form("eingabe_formular"):
     col1, col2 = st.columns(2)
 
     with col1:
-        kaufpreis = st.number_input("Kaufpreis (€)", min_value=10000, value=500000, step=10000, help="= Kaufpreis OHNE Kaufnebenkosten")
-        eigenkapital = st.number_input("Eigenkapital (€)", min_value=0, value=50000, step=10000, help="= Eigenkapital, welches den notwendigen Kreditrahmen reduziert")
-        zinssatz = st.number_input("Zinssatz (p.a.)", min_value=0.1, max_value=10.0, value=4.0, step=0.1, help="= Zinssatz für Kredit")
+        kaufpreis = st.number_input("Kaufpreis (€)", min_value=10000, value=316000, step=10000, help="= Kaufpreis OHNE Kaufnebenkosten")
+        eigenkapital = st.number_input("Eigenkapital (€)", min_value=0, value=30000, step=10000, help="= Eigenkapital, welches den notwendigen Kreditrahmen reduziert")
+        zinssatz = st.number_input("Zinssatz (p.a.)", min_value=0.1, max_value=10.0, value=3.8, step=0.1, help="= Zinssatz für Kredit")
         laufzeit_jahre = st.number_input("Laufzeit (Jahre)", min_value=5, max_value=40, value=20, help="= Laufzeit des Kredits")
-        nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=10.0, help="= prozentualer Wert des Kaufpreises -> Grunderwerbsteuer (3,5-6,5%), Maklerkosten (5-7%) sowie Notar- und Grundbuchkosten (1-1,5%)")
+        nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=7.0, help="= prozentualer Wert des Kaufpreises -> Grunderwerbsteuer (3,5-6,5%), Maklerkosten (5-7%) sowie Notar- und Grundbuchkosten (1-1,5%)")
         region = st.text_input("Region der Immobilie", value = "Hamburg", help="= Stadt oder Ballungsraum. Wird nur für die Expertenmeinung verwendet.")
         experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
 
     with col2:
-        wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=120, help="")
-        miete_pro_m2 = st.number_input("Miete pro m² (€)", min_value=1.0, value=11.0, step=0.5, help="")
+        wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=56, help="")
+        miete_pro_m2 = st.number_input("Miete pro m² (€)", min_value=1.0, value=16.0, step=0.5, help="")
         mieterhoehung = st.number_input("Jährliche Mieterhöhung (%)", min_value=0.0, max_value=10.0, value=1.0, help="")
         nebenkosten = st.number_input("Nicht umlagefähige Nebenkosten (€/Monat)", min_value=0, value=250, help="Verwaltungs- oder Instandhaltungskosten sowie einmalige Ausgaben, etwa die Neuanlage eines Gartens oder die Installation neuer Feuerlöscher")
         steuersatz = st.number_input("Persönlicher Steuersatz (%)", min_value=0.0, max_value=50.0, value=42.0, help="")
