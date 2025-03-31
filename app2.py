@@ -162,8 +162,10 @@ if berechnen:
 
 
         col21, col22, col23 = st.columns(3)
-        # with col21:
-        
+        with col21:
+            preisproqm = kaufpreis/wohnfläche
+            st.metric("Preis pro m²", f"{ preisproqm:.2f} %", help="Kaufpreis pro Quadratmeter Wohnfläche")            
+
         with col22:
             zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
             st.metric("Zinslast gesamt", f"{ zinslast*100:.2f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")            
@@ -267,6 +269,7 @@ if berechnen:
         "Laufzeit (Jahre)": laufzeit_jahre,
         "Kaufnebenkosten (%)": nebenkosten_kauf,
         "Wohnfläche (m²)": wohnfläche,
+        "Kaufpreis pro m²" : preisproqm,
         "Kreditrate pro Monat": rate,
         "⌀ mtl. Mieteinnahmen": df["Mieteinnahmen"].sum()/laufzeit_jahre/12,
         "⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern": df["Reale Monatskosten"].sum()/laufzeit_jahre,
