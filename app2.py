@@ -178,18 +178,17 @@ if berechnen:
             
         # st.dataframe(gesamt.style.format("{:,.2f}"), use_container_width=True)    
 
-    st.subheader("Download als Excel-Datei")
-    def convert_df_to_excel(data: pd.DataFrame):
-        from io import BytesIO
-        output = BytesIO()
-        with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-            data.to_excel(writer, sheet_name="Jahrestabelle", index=False)
-            gesamt.to_excel(writer, sheet_name="Summen", index=False)
-        return output.getvalue()
+    st.subheader("📈 Wie hoch darf der Kaufpreis sein, so dass sich die Immobilie selbst trägt? ")    
+    from kaufpreis_vs_miete_plotly import plot_kaufpreis_vs_miete
 
-    excel_data = convert_df_to_excel(df)
-    st.download_button("Excel-Datei herunterladen", data=excel_data, file_name="Immobilienmodell.xlsx")
-
+    plot_kaufpreis_vs_miete(
+        zinssatz=zinssatz / 100,
+        laufzeit_jahre=laufzeit_jahre,
+        eigenkapital=eigenkapital,
+        nebenkosten_kauf=nebenkosten_kauf / 100,
+        wohnfläche=wohnfläche,
+        nebenkosten_mtl_pro_m2 = nebenkosten/wohnfläche
+    )
     
     st.subheader("📈 Break-Even Analyse: Kaltmiete vs. monatliche Kosten")
     import plotly.graph_objects as go
@@ -228,6 +227,17 @@ if berechnen:
                       showlegend=True)
     st.plotly_chart(fig, use_container_width=True)
 
+    st.subheader("Download als Excel-Datei")
+    def convert_df_to_excel(data: pd.DataFrame):
+        from io import BytesIO
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+            data.to_excel(writer, sheet_name="Jahrestabelle", index=False)
+            gesamt.to_excel(writer, sheet_name="Summen", index=False)
+        return output.getvalue()
+
+    excel_data = convert_df_to_excel(df)
+    st.download_button("Excel-Datei herunterladen", data=excel_data, file_name="Immobilienmodell.xlsx")
 
     # --- Experteneinschätzung mit GPT einholen ---
     import openai
