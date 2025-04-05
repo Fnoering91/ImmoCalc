@@ -187,7 +187,8 @@ if berechnen:
         eigenkapital=eigenkapital,
         nebenkosten_kauf=nebenkosten_kauf / 100,
         wohnfläche=wohnfläche,
-        nebenkosten_mtl_pro_m2 = nebenkosten/wohnfläche
+        nebenkosten_mtl_pro_m2 = nebenkosten/wohnfläche, 
+        miete_max = 40        
     )
     
     st.subheader("📈 Break-Even Analyse: Kaltmiete vs. monatliche Kosten")
@@ -196,7 +197,7 @@ if berechnen:
     miete_values = []
     kosten_values = []
 
-    for miete_test in range(5, 30):
+    for miete_test in range(8, 40):
         test_miete_pro_monat = wohnfläche * miete_test
         mieteinnahmen_total = 0
         saldo_test = darlehen
