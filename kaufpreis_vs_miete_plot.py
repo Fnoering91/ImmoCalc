@@ -31,21 +31,21 @@ def plot_kaufpreis_vs_miete(
     fig.add_trace(go.Scatter(
         x=miete_pro_m2,
         y=P,
-        name="Max. Kaufpreis €/m²",
+        name="Kaufpreis bei eigener Tragfähigkeit der Immobilie bei entsprechender Miete (€/m²)",
         line=dict(color="blue")
     ), secondary_y=False)
 
     fig.add_trace(go.Scatter(
         x=miete_pro_m2,
         y=kaufpreis_gesamt,
-        name="Kaufpreis gesamt (€)",
+        name="Kaufpreis bei eigener Tragfähigkeit der Immobilie bei entsprechender Miete (€)",
         line=dict(color="green", dash="dash")
     ), secondary_y=True)
 
     fig.update_layout(
-        title="🔍 Miete vs. maximal tragbarer Kaufpreis (Plotly, 2 Achsen)",
+        title="🔍 Miete vs. tragbarer Kaufpreis",
         xaxis_title="Miete pro m² (€)",
-        yaxis_title="Max. Kaufpreis pro m² (€)",
+        yaxis_title="Kaufpreis pro m² (€/m²)",
         yaxis2_title="Kaufpreis gesamt (€)",
         legend=dict(x=0.01, y=0.99),
         margin=dict(l=60, r=60, t=60, b=40)
