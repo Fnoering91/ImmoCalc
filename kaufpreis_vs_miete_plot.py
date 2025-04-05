@@ -1,7 +1,7 @@
 
-import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
+import plotly.graph_objects as go
 
 def plot_kaufpreis_vs_miete(
     zinssatz: float,
@@ -15,7 +15,7 @@ def plot_kaufpreis_vs_miete(
     schritte: int = 100
 ):
     """
-    Zeichnet eine Grafik: Miete pro m² vs. maximal tragbarer Kaufpreis pro m²
+    Zeichnet eine interaktive Plotly-Grafik: Miete pro m² vs. maximal tragbarer Kaufpreis pro m²
     """
 
     # Annuitätsfaktor
@@ -30,23 +30,42 @@ def plot_kaufpreis_vs_miete(
     P = ((miete_pro_m2 - nebenkosten_mtl_pro_m2) * wohnfläche * 12 + eigenkapital * a) / (wohnfläche * (1 + nebenkosten_kauf) * a)
     kaufpreis_gesamt = P * wohnfläche
 
-    # Plot
-    fig, ax1 = plt.subplots(figsize=(10, 6))
+    # Interaktives Plotly-Diagramm
+    fig = go.Figure()
 
-    color1 = 'tab:blue'
-    ax1.set_xlabel("Miete pro m² (€)")
-    ax1.set_ylabel("Max. Kaufpreis pro m² (€)", color=color1)
-    ax1.plot(miete_pro_m2, P, color=color1, label="Max. Kaufpreis €/m²")
-    ax1.tick_params(axis='y', labelcolor=color1)
-    ax1.grid(True)
+    fig.add_trace(go.Scatter(
+        x=miete_pro_m2,
+        y=P,
+        name="Max. Kaufpreis €/m²",
+        yaxis="y1",
+        line=dict(color="blue")
+    ))
 
-    # Zweite Y-Achse
-    ax2 = ax1.twinx()
-    color2 = 'tab:green'
-    ax2.set_ylabel("Max. Kaufpreis gesamt (€)", color=color2)
-    ax2.plot(miete_pro_m2, kaufpreis_gesamt, color=color2, linestyle='--', label="Kaufpreis gesamt")
-    ax2.tick_params(axis='y', labelcolor=color2)
+    fig.add_trace(go.Scatter(
+        x=miete_pro_m2,
+        y=kaufpreis_gesamt,
+        name="Kaufpreis gesamt (€)",
+        yaxis="y2",
+        line=dict(color="green", dash="dash")
+    ))
 
-    fig.tight_layout()
-    ax1.set_title("🔍 Miete vs. maximal tragbarer Kaufpreis (Formelbasiert)")
-    st.pyplot(fig)
+    fig.update_layout(
+        title="🔍 Miete vs. maximal tragbarer Kaufpreis (Plotly)",
+        xaxis=dict(title="Miete pro m² (€)"),
+        yaxis=dict(
+            title="Max. Kaufpreis pro m² (€)",
+            titlefont=dict(color="blue"),
+            tickfont=dict(color="blue")
+        ),
+        yaxis2=dict(
+            title="Max. Kaufpreis gesamt (€)",
+            titlefont=dict(color="green"),
+            tickfont=dict(color="green"),
+            overlaying="y",
+            side="right"
+        ),
+        legend=dict(x=0.01, y=0.99),
+        margin=dict(l=60, r=60, t=60, b=40)
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
