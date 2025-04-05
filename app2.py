@@ -179,7 +179,7 @@ if berechnen:
         # st.dataframe(gesamt.style.format("{:,.2f}"), use_container_width=True)    
 
     st.subheader("📈 Wie hoch darf der Kaufpreis sein, so dass sich die Immobilie selbst trägt? ")    
-    from kaufpreis_vs_miete_plotly import plot_kaufpreis_vs_miete
+    from kaufpreis_vs_miete_plot import plot_kaufpreis_vs_miete
 
     plot_kaufpreis_vs_miete(
         zinssatz=zinssatz / 100,
