@@ -14,11 +14,13 @@ def experteneinschaetzung_gpt(finanzdaten: dict, lageinfo: dict):
     )
 
     lage_text = ", ".join(f"{k} = {v}" for k, v in lageinfo.items())
-    user_prompt = f"Eckdaten der Finanzierung:
-                {finanzdaten}
-                
-                Lage der Immobilie:
-                {lage_text}"
+    user_prompt = f"""Eckdaten der Finanzierung:
+    {finanzdaten}
+    
+    Lage der Immobilie:
+    {lage_text}
+    """
+
 
     try:
         response = client.chat.completions.create(
