@@ -15,6 +15,9 @@ submitted, inputs = eingabeformular()
 # Berechnung und Darstellung
 if submitted:
     df, kpis = berechne_finanzierung(inputs)
+    # st.subheader("Berechnungsergebnisse")
+    with st.expander("Berechnungsergebnisse"):
+        zeige_Finanzierungsplan(df)
     zeige_zusammenfassung(df, kpis, inputs["laufzeit_jahre"])
 
     st.markdown("---")
