@@ -2,15 +2,15 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-def zeige_zusammenfassung(df, kpis, laufzeit_jahre, rate):
+def zeige_zusammenfassung(df, kpis, inputs):
     st.markdown("## 📊 Zusammenfassung der Finanzierung")
 
     col1, col2, col3 = st.columns(3)
     with col1:
         # st.metric("Reale Monatskosten", f"{kpis['reale_monatskosten']:.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12")
-        st.metric("mtl. Kreditrate", f"{round(rate, 2):,.2f} €", help="= Zinsen + Tilgung")
-        st.metric("⌀ mtl. Mieteinnahmen", f"{round(df["Mieteinnahmen"].sum()/laufzeit_jahre/12, 2):,.2f} €", help="= Mietpreis pro qm * Wohnungsgröße (Im Durchschnitt bei dynamischer Mietpreissteigerung)")
-        st.metric("⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern", f"{round(df["Reale Monatskosten"].sum()/laufzeit_jahre, 2):,.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12 (Durchschnitt über Laufzeit, da sich bis auf die Nebenkosten alle Werte dynamisch verändern)")
+        st.metric("mtl. Kreditrate", f"{round(inputs["rate"], 2):,.2f} €", help="= Zinsen + Tilgung")
+        st.metric("⌀ mtl. Mieteinnahmen", f"{round(df["Mieteinnahmen"].sum()/inputs["laufzeit_jahre"]/12, 2):,.2f} €", help="= Mietpreis pro qm * Wohnungsgröße (Im Durchschnitt bei dynamischer Mietpreissteigerung)")
+        st.metric("⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern", f"{round(df["Reale Monatskosten"].sum()/inputs["laufzeit_jahre"], 2):,.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12 (Durchschnitt über Laufzeit, da sich bis auf die Nebenkosten alle Werte dynamisch verändern)")
 
     with col2:
         # st.metric("Jährliche Mieteinnahmen", f"{kpis['mieteinnahmen']:.2f} €")
@@ -26,7 +26,7 @@ def zeige_zusammenfassung(df, kpis, laufzeit_jahre, rate):
 
     col21, col22, col23 = st.columns(3)
     with col21:
-        preisproqm = kaufpreis/wohnfläche
+        preisproqm = inputs["kaufpreis"]/inputs["wohnfläche"]
         st.metric("Preis pro m²", f"{ preisproqm:,.2f} €", help="Kaufpreis pro Quadratmeter Wohnfläche")            
 
     with col22:
@@ -50,8 +50,8 @@ def zeige_zusammenfassung(df, kpis, laufzeit_jahre, rate):
     # st.write(f"- **Nebenkosten (nicht umlagefähig)**: {kpis['nebenkosten']:.2f} €")
     # st.write(f"- **Steuervorteil (realistisch)**: {kpis['steuerlicher_vorteil']:.2f} €")
 
-    # st.subheader(f"📈 Gesamtwerte über {laufzeit_jahre} Jahre")
-    # gesamt_steuer_vorteil = kpis['steuerlicher_vorteil'] * laufzeit_jahre
+    # st.subheader(f"📈 Gesamtwerte über {inputs["laufzeit_jahre"]} Jahre")
+    # gesamt_steuer_vorteil = kpis['steuerlicher_vorteil'] * inputs["laufzeit_jahre"]
     # st.write(f"- **Gesamter Steuervorteil**: {gesamt_steuer_vorteil:.2f} €")
 
     # # Diagramm: Restschuld-Verlauf
