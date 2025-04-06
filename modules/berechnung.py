@@ -60,7 +60,7 @@ def berechne_finanzierung(inputs):
         "mieteinnahmen": mieteinnahmen,
         "nebenkosten": nebenkosten_real
     }
-def zeige_Finanzierungsplan(df)
+def zeige_Finanzierungsplan(df):
     
     st.dataframe(df.style.format("{:,.2f}"), use_container_width=True,
                 column_config={
@@ -98,3 +98,5 @@ def zeige_Finanzierungsplan(df)
                     )
                 }
             )
+    return
+    
