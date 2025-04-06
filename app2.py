@@ -2,6 +2,7 @@
 import streamlit as st
 from modules.inputs import eingabeformular
 from modules.berechnung import berechne_finanzierung
+from modules.berechnung import zeige_Finanzierungsplan
 from modules.zusammenfassung import zeige_zusammenfassung
 from modules.plots import plot_kaufpreis_vs_miete
 from modules.gpt_experte import experteneinschaetzung_gpt
