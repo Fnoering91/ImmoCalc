@@ -19,7 +19,7 @@ if submitted:
     # st.subheader("Berechnungsergebnisse")
     with st.expander("Berechnungsergebnisse"):
         zeige_Finanzierungsplan(df)
-    zeige_zusammenfassung(df, kpis, inputs["laufzeit_jahre"])
+    zeige_zusammenfassung(df, kpis, inputs)
 
     st.markdown("---")
     st.subheader("📈 Tragfähiger Kaufpreis je nach Mieteinnahme")
