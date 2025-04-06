@@ -39,5 +39,5 @@ def eingabeformular():
         "nicht_umlagefaehige_kosten": nicht_umlagefaehige_kosten,
         "region": region,
         "experteneinschaetzung_aktiv": experteneinschaetzung_aktiv,
-        "stadtteil", stadtteil
+        "stadtteil": stadtteil
     }
