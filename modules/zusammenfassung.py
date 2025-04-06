@@ -8,7 +8,7 @@ def zeige_zusammenfassung(df, kpis, inputs):
     col1, col2, col3 = st.columns(3)
     with col1:
         # st.metric("Reale Monatskosten", f"{kpis['reale_monatskosten']:.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12")
-        st.metric("mtl. Kreditrate", f"{round(inputs["rate"], 2):,.2f} €", help="= Zinsen + Tilgung")
+        st.metric("mtl. Kreditrate", f"{round(kpis["rate"], 2):,.2f} €", help="= Zinsen + Tilgung")
         st.metric("⌀ mtl. Mieteinnahmen", f"{round(df["Mieteinnahmen"].sum()/inputs["laufzeit_jahre"]/12, 2):,.2f} €", help="= Mietpreis pro qm * Wohnungsgröße (Im Durchschnitt bei dynamischer Mietpreissteigerung)")
         st.metric("⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern", f"{round(df["Reale Monatskosten"].sum()/inputs["laufzeit_jahre"], 2):,.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12 (Durchschnitt über Laufzeit, da sich bis auf die Nebenkosten alle Werte dynamisch verändern)")
 
