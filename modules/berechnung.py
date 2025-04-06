@@ -21,14 +21,21 @@ def berechne_finanzierung(inputs):
     r = zinssatz
     n = laufzeit_jahre
     a = (r * (1 + r)**n) / ((1 + r)**n - 1)  # Annuität
-
+    zins_monat = zinssatz / 12
+    monate = laufzeit_jahre * 12
+    try:
+        rate = darlehen * (zins_monat / (1 - (1 + zins_monat) ** -monate))
+    except ZeroDivisionError:
+        st.error("Zinssatz darf nicht 0 sein!")
+        st.stop()
+    
     # AfA: 2 % auf 80 % des Kaufpreises (ohne NK)
     afa_berechnungsbasis = kaufpreis * 0.8
     afa = afa_berechnungsbasis * 0.02
 
     rows = []
     restschuld = darlehen
-
+    
     for jahr in range(1, laufzeit_jahre + 1):
         zinsen = restschuld * r
         tilgung = (darlehen * a) - zinsen
@@ -58,7 +65,8 @@ def berechne_finanzierung(inputs):
         "steuerlicher_vorteil": steuerlicher_vorteil,
         "reale_monatskosten": reale_monatskosten,
         "mieteinnahmen": mieteinnahmen,
-        "nebenkosten": nebenkosten_real
+        "nebenkosten": nebenkosten_real, 
+        "rate": rate
     }
 def zeige_Finanzierungsplan(df):
     
