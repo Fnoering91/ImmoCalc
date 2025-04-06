@@ -1,4 +1,4 @@
-
+import streamlit as st
 import pandas as pd
 
 def berechne_finanzierung(inputs):
@@ -60,3 +60,41 @@ def berechne_finanzierung(inputs):
         "mieteinnahmen": mieteinnahmen,
         "nebenkosten": nebenkosten_real
     }
+def zeige_Finanzierungsplan(df)
+    
+    st.dataframe(df.style.format("{:,.2f}"), use_container_width=True,
+                column_config={
+                    "Restschuld": st.column_config.NumberColumn(
+                        "Restschuld (€)",
+                        help="Verbleibender Kreditbetrag am Jahresende"
+                    ),
+                    "Zinskosten": st.column_config.NumberColumn(
+                        "Zinskosten (€)",
+                        help="Im Jahr gezahlte Kreditzinsen"
+                    ),
+                    "Tilgung": st.column_config.NumberColumn(
+                        "Tilgung (€)",
+                        help="Im Jahr getilgter Kreditbetrag"
+                    ),
+                    "Mieteinnahmen": st.column_config.NumberColumn(
+                        "Mieteinnahmen (€)",
+                        help="Jahresmiete inkl. Mieterhöhung"
+                    ),
+                    "AfA": st.column_config.NumberColumn(
+                        "AfA (€)",
+                        help="2 % Abschreibung auf 80 % des Kaufpreises"
+                    ),
+                    "Nebenkosten": st.column_config.NumberColumn(
+                        "Nebenkosten (€)",
+                        help="Nicht umlagefähige Kosten (jährlich)"
+                    ),
+                    "Steuerlicher Vorteil (real)": st.column_config.NumberColumn(
+                        "Steuervorteil (€)",
+                        help="Verlust × Steuersatz"
+                    ),
+                    "Reale Monatskosten": st.column_config.NumberColumn(
+                        "Reale Monatskosten (€)",
+                        help="(Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12"
+                    )
+                }
+            )
