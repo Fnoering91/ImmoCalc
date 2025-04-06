@@ -22,7 +22,8 @@ def experteneinschaetzung_gpt(finanzdaten: dict, lageinfo: dict):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            # model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
