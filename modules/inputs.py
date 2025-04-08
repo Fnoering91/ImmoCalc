@@ -38,8 +38,8 @@ def eingabeformular():
             exit_nach = st.number_input("Exit nach (Jahre)", min_value=10, max_value=30, value=10, help=" nach 10 Jahren Haltedauer sind die Gewinne durch Verkauf steuerfrei!")
         
         st.markdown("---")
-
-        with col31:
+        col41, col42 = st.columns(2)
+        with col41:
             experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
         
         submitted = st.form_submit_button("Finanzierung berechnen")
