@@ -25,8 +25,7 @@ def eingabeformular():
         col21, col22 = st.columns(2)
         with col21:
             steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=42)
-            nicht_umlagefaehige_kosten = st.number_input("Nicht umlagefähige Nebenkosten (€/m² p.a.)", min_value=0.0, value=25.0, step=1.0)
-            experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
+            nicht_umlagefaehige_kosten = st.number_input("Nicht umlagefähige Nebenkosten (€/m² p.a.)", min_value=0.0, value=25.0, step=1.0)            
         with col22:
             annahme_wertsteigerung = st.slider("Wertsteigerung der Immobilie pro Jahr (%)", -5.0, 5.0, value=0.0, step=0.1, help="Nominal = OHNE Einbezug von Inflation. --> Nominal, also ohne Berücksichtigung der Inflation, stiegen die Immobilienpreise in Deutschland seit 1975 um etwa 215 %. Das entspricht einer durchschnittlichen jährlichen Steigerung von ungefähr 2,7 %. ")
             annahme_inflation = st.slider("Inflation pro Jahr (%)", -5.0, 5.0, value=1.0, step=0.1, help="")                
@@ -34,10 +33,15 @@ def eingabeformular():
         st.markdown("---")
         col31, col32 = st.columns(2)
         with col31:
-            experteneinschaetzung_aktiv = st.checkbox("Exit Option berechnen", value=False, help="Exit bezeichnet die Möglichkeit frühzeitig aus dem Kredit auszusteigen, indem die Immobilie verkauft wird und der steuerfreie Gewinn durch Wertsteigerung realisiert wird.")
+            exit_aktiv = st.checkbox("Exit Option berechnen", value=False, help="Exit bezeichnet die Möglichkeit frühzeitig aus dem Kredit auszusteigen, indem die Immobilie verkauft wird und der steuerfreie Gewinn durch Wertsteigerung realisiert wird.")
         with col32:
-            laufzeit_jahre = st.number_input("Exit nach (Jahre)", min_value=10, max_value=30, value=10, help=" nach 10 Jahren Haltedauer sind die Gewinne durch Verkauf steuerfrei!")
+            exit_nach = st.number_input("Exit nach (Jahre)", min_value=10, max_value=30, value=10, help=" nach 10 Jahren Haltedauer sind die Gewinne durch Verkauf steuerfrei!")
+        
+        st.markdown("---")
 
+        with col31:
+            experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
+        
         submitted = st.form_submit_button("Finanzierung berechnen")
     return submitted, {
         "kaufpreis": kaufpreis,
@@ -54,5 +58,7 @@ def eingabeformular():
         "experteneinschaetzung_aktiv": experteneinschaetzung_aktiv,
         "stadtteil": stadtteil, 
         "annahme_wertsteigerung":annahme_wertsteigerung, 
-        "annahme_inflation":annahme_inflation
+        "annahme_inflation":annahme_inflation,
+        "exit_aktiv": exit_aktiv,
+        "exit_nach":exit_nach
     }
