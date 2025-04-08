@@ -23,7 +23,8 @@ def zeige_zusammenfassung(df, kpis, inputs):
         # st.metric("Jährlicher Steuervorteil", f"{kpis['steuerlicher_vorteil']:.2f} €")
         st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():,.2f} €", help=" Mieteinnahmen über die gesamte Laufzeit")            
         st.metric("Steuervorteil über Laufzeit", f"{df["Steuerlicher Vorteil (real)"].sum():,.2f} €", help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
-
+    
+    st.markdown("---")
     col21, col22, col23 = st.columns(3)
     with col21:
         preisproqm = inputs["kaufpreis"]/inputs["wohnfläche"]
@@ -38,7 +39,19 @@ def zeige_zusammenfassung(df, kpis, inputs):
         st.metric("Steuerquote", f"{ steuerquote*100:.2f} %", help="Anteil der Gesamtkosten, die durch Steuern reduziert werden können.")   
         mietrendite = df["Mieteinnahmen"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
         st.metric("Mietrendite", f"{ mietrendite*100:.2f} %", help="Verhältnis von Mieteinnahmen zu Gesamtkosten der Finanzierung.")   
-        
+
+    st.markdown("---")
+    col31, col32, col33 = st.columns(3)
+    with col31:
+        immowert = inputs["kaufpreis"]*(1+inputs["annahme_wertsteigerung"]) ** inputs["laufzeit_jahre"]
+        st.metric("Immobilienpreis inkl. Wertsteigerung", f"{ immowert:,.2f} €", help="nach Kreditlaufzeit")            
+
+    with col32:
+        realer_immowert = immowert / (1 + inputs["annahme_inflation"]) ** inputs["laufzeit_jahre"]
+        st.metric("Kaufkraft in heutigen Preisen", f"{ realer_immowert:,.2f} %", help="Immobilienwert (inkl. Wertsteigerung) reduziert um Inflation")            
+
+    with col33:
+    
     # st.markdown("---")
     # st.subheader("🔢 Monatswerte")
     # st.write(f"- **Reale Monatskosten**: {kpis['reale_monatskosten']:.2f} €")
