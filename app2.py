@@ -18,21 +18,23 @@ if submitted:
     df, kpis = berechne_finanzierung(inputs)
     # st.subheader("Berechnungsergebnisse")
 
-    zeige_zusammenfassung(df, kpis, inputs)
+    with st.expander("## 📊 Zusammenfassung Vollfinanzierung"):
+        zeige_zusammenfassung(df, kpis, inputs)
 
-    with st.expander("Berechnungsergebnisse"):
+    with st.expander("## Finanzierungsplan"):
         zeige_Finanzierungsplan(df)
 
     st.markdown("---")
-    st.subheader("📈 Tragfähiger Kaufpreis je nach Mieteinnahme")
-    plot_kaufpreis_vs_miete(
-        zinssatz=inputs["zinssatz"],
-        laufzeit_jahre=inputs["laufzeit_jahre"],
-        eigenkapital=inputs["eigenkapital"],
-        nebenkosten_kauf=inputs["nebenkosten_kauf"],
-        wohnfläche=inputs["wohnfläche"],
-        nebenkosten_mtl_pro_m2=inputs["nicht_umlagefaehige_kosten"] / 12
-    )
+    # st.subheader("📈 Tragfähiger Kaufpreis je nach Mieteinnahme")
+    with st.expander("## 📈 Tragfähiger Kaufpreis je nach Mieteinnahme"):
+        plot_kaufpreis_vs_miete(
+            zinssatz=inputs["zinssatz"],
+            laufzeit_jahre=inputs["laufzeit_jahre"],
+            eigenkapital=inputs["eigenkapital"],
+            nebenkosten_kauf=inputs["nebenkosten_kauf"],
+            wohnfläche=inputs["wohnfläche"],
+            nebenkosten_mtl_pro_m2=inputs["nicht_umlagefaehige_kosten"] / 12
+        )
 
     if inputs["experteneinschaetzung_aktiv"]:
         st.markdown("---")
