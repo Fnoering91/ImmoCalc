@@ -50,7 +50,7 @@ def zeige_zusammenfassung(df, kpis, inputs):
         realer_immowert = immowert / (1 + inputs["annahme_inflation"]) ** inputs["laufzeit_jahre"]
         st.metric("Kaufkraft in heutigen Preisen", f"{ realer_immowert:,.2f} %", help="Immobilienwert (inkl. Wertsteigerung) reduziert um Inflation")            
 
-    with col33:
+    # with col33:
     
     # st.markdown("---")
     # st.subheader("🔢 Monatswerte")
