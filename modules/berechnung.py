@@ -43,7 +43,8 @@ def berechne_finanzierung(inputs):
         mieteinnahmen = kaltmiete * wohnfläche * 12 * ((1 + mieterhoehung) ** (jahr - 1))
         nebenkosten_real = wohnfläche * nicht_umlagefaehige_kosten
         verlust = zinsen + nebenkosten_real - mieteinnahmen - afa
-        steuerlicher_vorteil = max(0, verlust * steuersatz)
+        steuerlich_absetzbar = mieteinnahmen - (zinsen + afa + nebenkosten_real)
+        steuerlicher_vorteil = max(0, steuerlich_absetzbar * steuersatz)
         reale_monatskosten = (zinsen + tilgung + nebenkosten_real - mieteinnahmen - steuerlicher_vorteil) / 12
 
         rows.append({
