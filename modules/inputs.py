@@ -23,8 +23,8 @@ def eingabeformular():
             mieterhoehung = st.slider("Jährliche Mieterhöhung (%)", 0.0, 5.0, value=1.0, step=0.1)
             steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=42)
             nicht_umlagefaehige_kosten = st.number_input("Nicht umlagefähige Nebenkosten (€/m² p.a.)", min_value=0.0, value=25.0, step=1.0)
-            annahme_wertsteigerung = st.slider("Wertsteigerung der Immobilie pro Jahr (%)", -5, 5, value=0, step=0.1, help="Nominal = OHNE Einbezug von Inflation. --> Nominal, also ohne Berücksichtigung der Inflation, stiegen die Immobilienpreise in Deutschland seit 1975 um etwa 215 %. Das entspricht einer durchschnittlichen jährlichen Steigerung von ungefähr 2,7 %. ")
-            annahme_inflation = = st.slider("Inflation pro Jahr (%)", -5, 5, value=1.0, step=0.1, help="")
+            annahme_wertsteigerung = st.slider("Wertsteigerung der Immobilie pro Jahr (%)", -5.0, 5.0, value=0.0, step=0.1, help="Nominal = OHNE Einbezug von Inflation. --> Nominal, also ohne Berücksichtigung der Inflation, stiegen die Immobilienpreise in Deutschland seit 1975 um etwa 215 %. Das entspricht einer durchschnittlichen jährlichen Steigerung von ungefähr 2,7 %. ")
+            annahme_inflation = = st.slider("Inflation pro Jahr (%)", -5.0, 5.0, value=1.0, step=0.1, help="")
         submitted = st.form_submit_button("Finanzierung berechnen")
 
     return submitted, {
