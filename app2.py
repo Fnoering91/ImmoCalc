@@ -29,7 +29,7 @@ if submitted:
     if inputs["exit_aktiv"]:
         st.markdown("---")
         with st.expander("## 📊 Zusammenfassung Exit-Option"):
-        berechne_exit_option(inputs, df)
+            berechne_exit_option(inputs, df)
     
     st.markdown("---")
     # st.subheader("📈 Tragfähiger Kaufpreis je nach Mieteinnahme")
