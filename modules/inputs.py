@@ -20,7 +20,7 @@ def eingabeformular():
         with col2:
             wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=56, help="= zur Berechnung von Mieteinnahmen")
             kaltmiete = st.number_input("Kaltmiete (€/m²)", min_value=1.0, value=16.0, step=0.1, help="= durchschnittlicher Mietpreis")
-            mieterhoehung = st.slider("Jährliche Mieterhöhung (%)", 0.0, 5.0, value=1, step=0.1)
+            mieterhoehung = st.slider("Jährliche Mieterhöhung (%)", 0.0, 5.0, value=1.0, step=0.1)
             steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=42)
             nicht_umlagefaehige_kosten = st.number_input("Nicht umlagefähige Nebenkosten (€/m² p.a.)", min_value=0.0, value=25.0, step=1.0)
 
