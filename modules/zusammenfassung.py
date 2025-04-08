@@ -3,7 +3,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 def zeige_zusammenfassung(df, kpis, inputs):
-    st.markdown("## 📊 Zusammenfassung der Finanzierung")
+    # st.markdown("## 📊 Zusammenfassung Vollfinanzierung")
 
     col1, col2, col3 = st.columns(3)
     with col1:
