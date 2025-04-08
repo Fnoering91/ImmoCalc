@@ -44,7 +44,7 @@ def berechne_finanzierung(inputs):
         nebenkosten_real = wohnfläche * nicht_umlagefaehige_kosten
         verlust = zinsen + nebenkosten_real - mieteinnahmen - afa
         steuerlich_absetzbar = mieteinnahmen - (zinsen + afa + nebenkosten_real)
-        steuerlicher_vorteil = max(0, steuerlich_absetzbar * steuersatz)
+        steuerlicher_vorteil = steuerlich_absetzbar * steuersatz
         reale_monatskosten = (zinsen + tilgung + nebenkosten_real - mieteinnahmen - steuerlicher_vorteil) / 12
 
         rows.append({
