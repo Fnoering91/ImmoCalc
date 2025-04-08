@@ -8,37 +8,37 @@ def zeige_zusammenfassung(df, kpis, inputs):
     col1, col2, col3 = st.columns(3)
     with col1:
         # st.metric("Reale Monatskosten", f"{kpis['reale_monatskosten']:.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12")
-        st.metric("mtl. Kreditrate", f"{round(kpis["rate"], 2):,.2f} €", help="= Zinsen + Tilgung")
-        st.metric("⌀ mtl. Mieteinnahmen", f"{round(df["Mieteinnahmen"].sum()/inputs["laufzeit_jahre"]/12, 2):,.2f} €", help="= Mietpreis pro qm * Wohnungsgröße (Im Durchschnitt bei dynamischer Mietpreissteigerung)")
-        st.metric("⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern", f"{round(df["Reale Monatskosten"].sum()/inputs["laufzeit_jahre"], 2):,.2f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12 (Durchschnitt über Laufzeit, da sich bis auf die Nebenkosten alle Werte dynamisch verändern)")
+        st.metric("mtl. Kreditrate", f"{round(kpis["rate"], 2):,.0f} €", help="= Zinsen + Tilgung")
+        st.metric("⌀ mtl. Mieteinnahmen", f"{round(df["Mieteinnahmen"].sum()/inputs["laufzeit_jahre"]/12, 2):,.0f} €", help="= Mietpreis pro qm * Wohnungsgröße (Im Durchschnitt bei dynamischer Mietpreissteigerung)")
+        st.metric("⌀ mtl. Belastung abzgl. Mieteinnahmen & Steuern", f"{round(df["Reale Monatskosten"].sum()/inputs["laufzeit_jahre"], 2):,.0f} €", help="= (Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12 (Durchschnitt über Laufzeit, da sich bis auf die Nebenkosten alle Werte dynamisch verändern)")
 
     with col2:
         # st.metric("Jährliche Mieteinnahmen", f"{kpis['mieteinnahmen']:.2f} €")
-        st.metric("Gesamtkosten Kredit & Vermietung ", f"{ df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum():,.2f} €", help=" Summe der Zinsen, Tilgung und Nebenkosten für Vermietung über die gesamte Laufzeit")
-        st.metric("Davon Tilgung", f"{ df["Tilgung"].sum():,.2f} €", help=" Tilgung über die gesamte Laufzeit")
-        st.metric("Davon Zinskosten", f"{ df["Zinskosten"].sum():,.2f} €", help=" Zinskosten über die gesamte Laufzeit")
-        st.metric("Davon Nebenkosten", f"{ df["Nebenkosten"].sum():,.2f} €", help=" Nebenkosten über die gesamte Laufzeit")
+        st.metric("Gesamtkosten Kredit & Vermietung ", f"{ df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum():,.0f} €", help=" Summe der Zinsen, Tilgung und Nebenkosten für Vermietung über die gesamte Laufzeit")
+        st.metric("Davon Tilgung", f"{ df["Tilgung"].sum():,.0f} €", help=" Tilgung über die gesamte Laufzeit")
+        st.metric("Davon Zinskosten", f"{ df["Zinskosten"].sum():,.0f} €", help=" Zinskosten über die gesamte Laufzeit")
+        st.metric("Davon Nebenkosten", f"{ df["Nebenkosten"].sum():,.0f} €", help=" Nebenkosten über die gesamte Laufzeit")
         
     with col3:
         # st.metric("Jährlicher Steuervorteil", f"{kpis['steuerlicher_vorteil']:.2f} €")
-        st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():,.2f} €", help=" Mieteinnahmen über die gesamte Laufzeit")            
-        st.metric("Steuervorteil über Laufzeit", f"{df["Steuerlicher Vorteil (real)"].sum():,.2f} €", help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
+        st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():,.0f} €", help=" Mieteinnahmen über die gesamte Laufzeit")            
+        st.metric("Steuervorteil über Laufzeit", f"{df["Steuerlicher Vorteil (real)"].sum():,.0f} €", help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
     
     st.markdown("---")
     col21, col22, col23 = st.columns(3)
     with col21:
         preisproqm = inputs["kaufpreis"]/inputs["wohnfläche"]
-        st.metric("Preis pro m²", f"{ preisproqm:,.2f} €", help="Kaufpreis pro Quadratmeter Wohnfläche")            
+        st.metric("Preis pro m²", f"{ preisproqm:,.0f} €", help="Kaufpreis pro Quadratmeter Wohnfläche")            
 
     with col22:
         zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        st.metric("Zinslast gesamt", f"{ zinslast*100:.2f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")            
+        st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")            
 
     with col23:
         steuerquote = -df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        st.metric("Steuerquote", f"{ steuerquote*100:.2f} %", help="Anteil der Gesamtkosten, die durch Steuern reduziert werden können.")   
+        st.metric("Steuerquote", f"{ steuerquote*100:.1f} %", help="Anteil der Gesamtkosten, die durch Steuern reduziert werden können.")   
         mietrendite = df["Mieteinnahmen"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        st.metric("Mietrendite", f"{ mietrendite*100:.2f} %", help="Verhältnis von Mieteinnahmen zu Gesamtkosten der Finanzierung.")   
+        st.metric("Mietrendite", f"{ mietrendite*100:.1f} %", help="Verhältnis von Mieteinnahmen zu Gesamtkosten der Finanzierung.")   
 
     st.markdown("---")
     col31, col32, col33 = st.columns(3)
