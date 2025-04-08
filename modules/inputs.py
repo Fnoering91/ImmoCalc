@@ -12,21 +12,34 @@ def eingabeformular():
             eigenkapital = st.number_input("Eigenkapital (€)", min_value=0, value=30000, step=10000, help="= Eigenkapital, welches den notwendigen Kreditrahmen reduziert")
             zinssatz = st.number_input("Zinssatz (p.a.)", min_value=0.1, max_value=10.0, value=3.8, step=0.1, help="= Zinssatz für Kredit")
             laufzeit_jahre = st.number_input("Laufzeit (Jahre)", min_value=5, max_value=40, value=25, help="= Laufzeit des Kredits")
-            nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=7.0, help="= Grunderwerbsteuer, Makler, Notar etc.")
-            region = st.text_input("Region der Immobilie", value="Hamburg", help="= Stadt oder Ballungsraum. Wird nur für die Expertenmeinung verwendet.")
-            stadtteil = st.text_input("Stadtteil der Immobilie", value = "Bergedorf", help="Wird nur für die Expertenmeinung verwendet.")
-            experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
+            nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=7.0, help="= Grunderwerbsteuer, Makler, Notar etc.")                
         
-        with col2:
+        with col2:            
             wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=56, help="= zur Berechnung von Mieteinnahmen")
             kaltmiete = st.number_input("Kaltmiete (€/m²)", min_value=1.0, value=16.0, step=0.1, help="= durchschnittlicher Mietpreis")
             mieterhoehung = st.slider("Jährliche Mieterhöhung (%)", 0.0, 5.0, value=1.0, step=0.1)
+            region = st.text_input("Region der Immobilie", value="Hamburg", help="= Stadt oder Ballungsraum. Wird nur für die Expertenmeinung verwendet.")
+            stadtteil = st.text_input("Stadtteil der Immobilie", value = "Bergedorf", help="Wird nur für die Expertenmeinung verwendet.")
+
+        st.markdown("---")
+        col21, col22 = st.columns(2)
+        with col21:
             steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=42)
             nicht_umlagefaehige_kosten = st.number_input("Nicht umlagefähige Nebenkosten (€/m² p.a.)", min_value=0.0, value=25.0, step=1.0)
+            experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
+        with col22:
             annahme_wertsteigerung = st.slider("Wertsteigerung der Immobilie pro Jahr (%)", -5.0, 5.0, value=0.0, step=0.1, help="Nominal = OHNE Einbezug von Inflation. --> Nominal, also ohne Berücksichtigung der Inflation, stiegen die Immobilienpreise in Deutschland seit 1975 um etwa 215 %. Das entspricht einer durchschnittlichen jährlichen Steigerung von ungefähr 2,7 %. ")
             annahme_inflation = st.slider("Inflation pro Jahr (%)", -5.0, 5.0, value=1.0, step=0.1, help="")
+            
         submitted = st.form_submit_button("Finanzierung berechnen")
 
+        st.markdown("---")
+        col31, col32 = st.columns(2)
+        with col31:
+            experteneinschaetzung_aktiv = st.checkbox("Exit Option berechnen", value=False, help="Exit bezeichnet die Möglichkeit frühzeitig aus dem Kredit auszusteigen, indem die Immobilie verkauft wird und der steuerfreie Gewinn durch Wertsteigerung realisiert wird.")
+        with col31:
+            laufzeit_jahre = st.number_input("Exit nach (Jahre)", min_value=10, max_value=30, value=10, help=" nach 10 Jahren Haltedauer sind die Gewinne durch Verkauf steuerfrei!")
+    
     return submitted, {
         "kaufpreis": kaufpreis,
         "eigenkapital": eigenkapital,
