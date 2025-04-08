@@ -44,15 +44,15 @@ def zeige_zusammenfassung(df, kpis, inputs):
     col31, col32, col33 = st.columns(3)
     with col31:
         immowert = inputs["kaufpreis"]*(1+inputs["annahme_wertsteigerung"]/100) ** inputs["laufzeit_jahre"]
-        st.metric("Immobilienpreis inkl. Wertsteigerung", f"{ immowert:,.2f} €", help="nach Kreditlaufzeit")            
+        st.metric("Immobilienpreis inkl. Wertsteigerung", f"{ immowert:,.f} €", help="nach Kreditlaufzeit")            
 
     with col32:
         realer_immowert = immowert / (1 + inputs["annahme_inflation"]/100) ** inputs["laufzeit_jahre"]
-        st.metric("Kaufkraft in heutigen Preisen", f"{ realer_immowert:,.2f} %", help="Immobilienwert (inkl. Wertsteigerung) reduziert um Inflation")            
+        st.metric("Kaufkraft in heutigen Preisen", f"{ realer_immowert:,.f} €", help="Immobilienwert (inkl. Wertsteigerung) reduziert um Inflation")            
 
     # with col33:
     
-    # st.markdown("---")
+    st.markdown("---")
     # st.subheader("🔢 Monatswerte")
     # st.write(f"- **Reale Monatskosten**: {kpis['reale_monatskosten']:.2f} €")
     # st.write(f"- **Mieteinnahmen pro Monat**: {kpis['mieteinnahmen'] / 12:.2f} €")
