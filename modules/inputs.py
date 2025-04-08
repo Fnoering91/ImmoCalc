@@ -11,17 +11,17 @@ def eingabeformular():
             kaufpreis = st.number_input("Kaufpreis (€)", min_value=10000, value=316000, step=10000, help="= Kaufpreis OHNE Kaufnebenkosten")
             eigenkapital = st.number_input("Eigenkapital (€)", min_value=0, value=30000, step=10000, help="= Eigenkapital, welches den notwendigen Kreditrahmen reduziert")
             zinssatz = st.number_input("Zinssatz (p.a.)", min_value=0.1, max_value=10.0, value=3.8, step=0.1, help="= Zinssatz für Kredit")
-            laufzeit_jahre = st.number_input("Laufzeit (Jahre)", min_value=5, max_value=40, value=20, help="= Laufzeit des Kredits")
+            laufzeit_jahre = st.number_input("Laufzeit (Jahre)", min_value=5, max_value=40, value=25, help="= Laufzeit des Kredits")
             nebenkosten_kauf = st.number_input("Kaufnebenkosten (%)", min_value=0.0, max_value=20.0, value=7.0, help="= Grunderwerbsteuer, Makler, Notar etc.")
             region = st.text_input("Region der Immobilie", value="Hamburg", help="= Stadt oder Ballungsraum. Wird nur für die Expertenmeinung verwendet.")
             stadtteil = st.text_input("Stadtteil der Immobilie", value = "Bergedorf", help="Wird nur für die Expertenmeinung verwendet.")
             experteneinschaetzung_aktiv = st.checkbox("GPT-Experteneinschätzung aktivieren", value=False)
         
         with col2:
-            wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=80, help="= zur Berechnung von Mieteinnahmen")
-            kaltmiete = st.number_input("Kaltmiete (€/m²)", min_value=1.0, value=12.5, step=0.1, help="= durchschnittlicher Mietpreis")
-            mieterhoehung = st.slider("Jährliche Mieterhöhung (%)", 0.0, 5.0, value=1.5, step=0.1)
-            steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=30)
+            wohnfläche = st.number_input("Wohnfläche (m²)", min_value=10, value=56, help="= zur Berechnung von Mieteinnahmen")
+            kaltmiete = st.number_input("Kaltmiete (€/m²)", min_value=1.0, value=16, step=0.1, help="= durchschnittlicher Mietpreis")
+            mieterhoehung = st.slider("Jährliche Mieterhöhung (%)", 0.0, 5.0, value=1, step=0.1)
+            steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=42)
             nicht_umlagefaehige_kosten = st.number_input("Nicht umlagefähige Nebenkosten (€/m² p.a.)", min_value=0.0, value=25.0, step=1.0)
 
         submitted = st.form_submit_button("Finanzierung berechnen")
