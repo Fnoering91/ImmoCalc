@@ -17,9 +17,11 @@ submitted, inputs = eingabeformular()
 if submitted:
     df, kpis = berechne_finanzierung(inputs)
     # st.subheader("Berechnungsergebnisse")
+
+    zeige_zusammenfassung(df, kpis, inputs)
+
     with st.expander("Berechnungsergebnisse"):
         zeige_Finanzierungsplan(df)
-    zeige_zusammenfassung(df, kpis, inputs)
 
     st.markdown("---")
     st.subheader("📈 Tragfähiger Kaufpreis je nach Mieteinnahme")
