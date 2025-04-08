@@ -6,6 +6,8 @@ from modules.berechnung import zeige_Finanzierungsplan
 from modules.zusammenfassung import zeige_zusammenfassung
 from modules.plots import plot_kaufpreis_vs_miete
 from modules.gpt_experte import experteneinschaetzung_gpt
+from modules.exit_berechnung import berechne_exit_option
+
 
 st.set_page_config(page_title="Immobilien-Rechner", layout="centered")
 st.title("🏠 Immobilien-Investment Rechner")
@@ -24,6 +26,11 @@ if submitted:
     with st.expander("## Finanzierungsplan"):
         zeige_Finanzierungsplan(df)
 
+    if inputs["exit_aktiv"]:
+        st.markdown("---")
+        with st.expander("## 📊 Zusammenfassung Exit-Option"):
+        berechne_exit_option(inputs, df)
+    
     st.markdown("---")
     # st.subheader("📈 Tragfähiger Kaufpreis je nach Mieteinnahme")
     with st.expander("## 📈 Tragfähiger Kaufpreis je nach Mieteinnahme"):
