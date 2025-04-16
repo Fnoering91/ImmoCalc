@@ -29,10 +29,17 @@ def zeige_zusammenfassung(df, kpis, inputs):
         # st.metric("Steuervorteil über Laufzeit", f"{steuervorteil:,.0f} €", delta=f"{delta_dummy:.2f}", delta_color=farbe, help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
 
         farbe = "green" if steuervorteil < 0 else "red" 
+        # st.markdown(f"""
+        # <div style='padding: 0.5em 1em; border: 1px solid #eee; border-radius: 0.5em; background-color: #f9f9f9;'>
+        #     <div style='font-size: 0.9rem; color: gray; margin-bottom: 0.3em;'>Steuervorteil über Laufzeit</div>
+        #     <div style='font-size: 1.6rem; font-weight: 600; color: {farbe};'>{steuervorteil:,.0f} €</div>
+        # </div>
+        # """, unsafe_allow_html=True)
+
         st.markdown(f"""
-        <div style='padding: 0.5em 1em; border: 1px solid #eee; border-radius: 0.5em; background-color: #f9f9f9;'>
-            <div style='font-size: 0.9rem; color: gray; margin-bottom: 0.3em;'>Steuervorteil über Laufzeit</div>
-            <div style='font-size: 1.6rem; font-weight: 600; color: {farbe};'>{steuervorteil:,.0f} €</div>
+        <div style='text-align: left; padding: 0.2em 0;'>
+            <div style='font-size: 0.85rem; color: #6c757d;'>{label}</div>
+            <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{wert:,.0f} €</div>
         </div>
         """, unsafe_allow_html=True)
     st.markdown("---")
