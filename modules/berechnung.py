@@ -46,6 +46,7 @@ def berechne_finanzierung(inputs):
         steuerlich_absetzbar = mieteinnahmen - (zinsen + afa + nebenkosten_real)
         steuerlicher_vorteil = steuerlich_absetzbar * steuersatz
         reale_monatskosten = (zinsen + tilgung + nebenkosten_real - mieteinnahmen - steuerlicher_vorteil) / 12
+        reale_monatskosten_excl_Steuervorteil = (zinsen + tilgung + nebenkosten_real - mieteinnahmen) / 12    
 
         rows.append({
             "Jahr": jahr,
@@ -56,7 +57,8 @@ def berechne_finanzierung(inputs):
             "AfA": round(afa, 2),
             "Nebenkosten": round(nebenkosten_real, 2),
             "Steuerlicher Vorteil (real)": round(steuerlicher_vorteil, 2),
-            "Reale Monatskosten": round(reale_monatskosten, 2)
+            "Reale Monatskosten": round(reale_monatskosten, 2),
+            "Monatskosten (exkl. Steuervorteil)": round(reale_monatskosten_excl_Steuervorteil, 2)
         })
 
     df = pd.DataFrame(rows)
@@ -104,6 +106,10 @@ def zeige_Finanzierungsplan(df):
                     "Reale Monatskosten": st.column_config.NumberColumn(
                         "Reale Monatskosten (€)",
                         help="(Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12"
+                    ),
+                    "Monatskosten (exkl. Steuervorteil)": st.column_config.NumberColumn(
+                        "Monatskosten exkl. Steuervorteil (€)",
+                        help="(Zinsen + Tilgung + Nebenkosten – Mieteinnahmen) / 12"
                     )
                 }
             )
