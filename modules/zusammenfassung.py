@@ -21,8 +21,11 @@ def zeige_zusammenfassung(df, kpis, inputs):
         
     with col3:
         # st.metric("Jährlicher Steuervorteil", f"{kpis['steuerlicher_vorteil']:.2f} €")
-        st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():,.0f} €", help=" Mieteinnahmen über die gesamte Laufzeit")            
-        st.metric("Steuervorteil über Laufzeit", f"{df["Steuerlicher Vorteil (real)"].sum():,.0f} €", help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
+        st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():,.0f} €", help=" Mieteinnahmen über die gesamte Laufzeit")   
+        
+        steuervorteil = df["Steuerlicher Vorteil (real)"].sum()
+        farbe = "inverse" if steuervorteil < 0 else "normal"  # inverse = grün bei negativen Werten
+        st.metric("Steuervorteil über Laufzeit", f"{steuervorteil:,.0f} €", delta="", delta_color=farbe, help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
     
     st.markdown("---")
     col21, col22, col23 = st.columns(3)
