@@ -81,13 +81,13 @@ def eingabeformular():
     return submitted, {
         "kaufpreis": kaufpreis,
         "eigenkapital": eigenkapital,
-        "zinssatz": zinssatz / 100,
+        "zinssatz": zinssatz , #/ 100
         "laufzeit_jahre": laufzeit_jahre,
-        "nebenkosten_kauf": nebenkosten_kauf / 100,
+        "nebenkosten_kauf": nebenkosten_kauf , #/ 100
         "wohnfläche": wohnfläche,
         "kaltmiete": kaltmiete,
-        "mieterhoehung": mieterhoehung / 100,
-        "steuersatz": steuersatz / 100,
+        "mieterhoehung": mieterhoehung , #/ 100
+        "steuersatz": steuersatz , #/ 100
         "nicht_umlagefaehige_kosten": nicht_umlagefaehige_kosten,
         "region": region,
         "experteneinschaetzung_aktiv": experteneinschaetzung_aktiv,
