@@ -16,7 +16,7 @@ if "uebernahme" in st.session_state:
     for key, value in uebernommene_daten.items():
         st.session_state[key] = value
     st.session_state["nach_uebernahme_info"] = st.session_state.pop("uebernahme_name", "unbekannt")
-    st.experimental_rerun()
+    st.rerun()
 
 # Defaults ergänzen, falls Felder fehlen
 default_inputs = {
@@ -47,9 +47,6 @@ for key, value in default_inputs.items():
 st.sidebar.header("💾 Gespeicherte Immobilien")
 immos = liste_immobilien()
 
-st.sidebar.header("💾 Gespeicherte Immobilien")
-immos = liste_immobilien()
-
 if immos:
     auswahl = st.sidebar.selectbox("📂 Immobilie laden", immos)
 
@@ -57,11 +54,11 @@ if immos:
     if col1.button("✅ Übernehmen", key="übernehmen"):
         st.session_state["uebernahme"] = lade_immobilie(auswahl)
         st.session_state["uebernahme_name"] = auswahl
-        st.experimental_rerun()
+        st.rerun()
 
     if col2.button("🗑️ Löschen", key="löschen"):
         loesche_immobilie(auswahl)
-        st.experimental_rerun()
+        st.rerun()
 
 # for name in immos:
 #     cols = st.sidebar.columns([0.75, 0.25])
