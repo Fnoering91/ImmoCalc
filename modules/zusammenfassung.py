@@ -24,11 +24,17 @@ def zeige_zusammenfassung(df, kpis, inputs):
         st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():,.0f} €", help=" Mieteinnahmen über die gesamte Laufzeit")   
         
         steuervorteil = df["Steuerlicher Vorteil (real)"].sum()
-        farbe = "inverse" if steuervorteil < 0 else "normal"  # inverse = grün bei negativen Werten
-        delta_dummy = 0.01 if steuervorteil < 0 else -0.01  # winzig kleiner Wert zur Farbauslösung
+        # farbe = "inverse" if steuervorteil < 0 else "normal"  # inverse = grün bei negativen Werten
+        # delta_dummy = 0.01 if steuervorteil < 0 else -0.01  # winzig kleiner Wert zur Farbauslösung            
+        # st.metric("Steuervorteil über Laufzeit", f"{steuervorteil:,.0f} €", delta=f"{delta_dummy:.2f}", delta_color=farbe, help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
 
-        st.metric("Steuervorteil über Laufzeit", f"{steuervorteil:,.0f} €", delta=f"{delta_dummy:.2f}", delta_color=farbe, help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
-    
+        farbe = "green" if steuervorteil < 0 else "red" 
+        st.markdown(f"""
+        <div style='padding: 0.5em 1em; border: 1px solid #eee; border-radius: 0.5em; background-color: #f9f9f9;'>
+            <div style='font-size: 0.9rem; color: gray; margin-bottom: 0.3em;'>Steuervorteil über Laufzeit</div>
+            <div style='font-size: 1.6rem; font-weight: 600; color: {farbe};'>{steuervorteil:,.0f} €</div>
+        </div>
+        """, unsafe_allow_html=True)
     st.markdown("---")
     col21, col22, col23 = st.columns(3)
     with col21:
