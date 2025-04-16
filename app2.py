@@ -17,17 +17,14 @@ immos = liste_immobilien()
 for name in immos:
     cols = st.sidebar.columns([0.75, 0.25])
     if cols[0].button(name):
-        if st.sidebar.confirm(f"Daten von '{name}' übernehmen?"):
+        if st.sidebar.button(f"✅ Übernehmen '{name}'", key=f"confirm_{name}"):
             st.session_state["uebernahme"] = lade_immobilie(name)
             st.session_state["uebernahme_name"] = name
             st.rerun()
     if cols[1].button("🗑️", key=f"delete_{name}"):
-        if st.sidebar.confirm(f"'{name}' wirklich löschen?"):
+        if st.sidebar.button(f"⚠️ Löschen '{name}'", key=f"really_delete_{name}"):
             loesche_immobilie(name)
             st.rerun()
-
-
-# Eingabeformular anzeigen
 
 # Eingabeformular anzeigen
 default_inputs = {
