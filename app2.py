@@ -10,6 +10,13 @@ from modules.speicher import speichere_immobilie, lade_immobilie, liste_immobili
 st.set_page_config(page_title="Immobilien-Rechner", layout="centered")
 st.title("🏠 Immobilien-Investment Rechner")
 
+# Früh prüfen, ob eine Übernahme im Gange ist, bevor das Formular gerendert wird
+if "uebernahme" in st.session_state:
+    for key, value in st.session_state.pop("uebernahme").items():
+        st.session_state[key] = value
+    st.session_state["nach_uebernahme_info"] = st.session_state.pop("uebernahme_name", "unbekannt")
+    st.rerun()
+
 # Sidebar: Immobilien-Liste mit Lade-/Löschfunktion
 st.sidebar.header("💾 Gespeicherte Immobilien")
 immos = liste_immobilien()
@@ -27,6 +34,13 @@ for name in immos:
             st.rerun()
 
 # Eingabeformular anzeigen
+submitted, inputs = eingabeformular()
+
+# Nachträgliche Info anzeigen nach Übernahme
+if "nach_uebernahme_info" in st.session_state:
+    st.info(f"Daten von '{st.session_state.pop('nach_uebernahme_info')}' übernommen.")
+
+# Defaults ergänzen, falls Felder fehlen
 default_inputs = {
     "kaufpreis": 316000,
     "eigenkapital": 30000,
@@ -36,7 +50,7 @@ default_inputs = {
     "wohnfläche": 56,
     "kaltmiete": 16.0,
     "mieterhoehung": 0.01,
-    "steuersatz": 42,
+    "steuersatz": 0.42,
     "nicht_umlagefaehige_kosten": 25.0,
     "region": "Hamburg",
     "stadtteil": "Bergedorf",
@@ -47,15 +61,6 @@ default_inputs = {
     "experteneinschaetzung_aktiv": False
 }
 
-# Wenn Daten aus gespeicherter Immobilie geladen wurden, ins Session State übernehmen
-if "uebernahme" in st.session_state:
-    for key, value in st.session_state.pop("uebernahme").items():
-        st.session_state[key] = value
-    st.info(f"Daten von '{st.session_state.pop('uebernahme_name', 'unbekannt')}' übernommen.")
-
-submitted, inputs = eingabeformular()
-
-# Fehlende Felder mit Defaults ergänzen
 for key in default_inputs:
     if key not in inputs:
         inputs[key] = default_inputs[key]
