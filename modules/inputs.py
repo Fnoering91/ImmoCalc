@@ -24,7 +24,7 @@ def eingabeformular():
         st.markdown("---")
         col21, col22 = st.columns(2)
         with col21:
-            steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=int(st.session_state.get("steuersatz", 0.42) * 100), key="steuersatz")
+            steuersatz = st.slider("Persönlicher Steuersatz (%)", 0, 50, value=int(st.session_state.get("steuersatz", 42)), key="steuersatz")
             nicht_umlagefaehige_kosten = st.number_input("Nicht umlagefähige Nebenkosten (€/m² p.a.)", min_value=0.0, value=st.session_state.get("nicht_umlagefaehige_kosten", 25.0), step=1.0, help = "Diese fallen regelmäßig an und können nicht auf den Mieter umgelegt werden (Höhe typischerweise ca. 20–30 €/m²/Jahr). Dazu zählen u.a. Verwaltungskosten (z. B. Hausverwaltung), Instandhaltungsrücklage, Reparaturkosten, Bankgebühren, ggf. Leerstandskosten (z. B. Mietausfallversicherung)", key="nicht_umlagefaehige_kosten")            
         with col22:
             annahme_wertsteigerung = st.slider("Wertsteigerung der Immobilie pro Jahr (%)", -5.0, 5.0, value=st.session_state.get("annahme_wertsteigerung", 0.0), step=0.1, help="Nominal = OHNE Einbezug von Inflation. --> Nominal, also ohne Berücksichtigung der Inflation, stiegen die Immobilienpreise in Deutschland seit 1975 um etwa 215 %. Das entspricht einer durchschnittlichen jährlichen Steigerung von ungefähr 2,7 %. ", key="annahme_wertsteigerung")
