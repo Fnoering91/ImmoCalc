@@ -18,30 +18,6 @@ if "uebernahme" in st.session_state:
     st.session_state["nach_uebernahme_info"] = st.session_state.pop("uebernahme_name", "unbekannt")
     st.experimental_rerun()
 
-
-# Sidebar: Immobilien-Liste mit Lade-/Löschfunktion
-st.sidebar.header("💾 Gespeicherte Immobilien")
-immos = liste_immobilien()
-
-for name in immos:
-    cols = st.sidebar.columns([0.75, 0.25])
-    if cols[0].button(name):
-        if st.sidebar.button(f"✅ Übernehmen '{name}'", key=f"confirm_{name}"):
-            st.session_state["uebernahme"] = lade_immobilie(name)
-            st.session_state["uebernahme_name"] = name
-            st.rerun()
-    if cols[1].button("🗑️", key=f"delete_{name}"):
-        if st.sidebar.button(f"⚠️ Löschen '{name}'", key=f"really_delete_{name}"):
-            loesche_immobilie(name)
-            st.rerun()
-
-# Eingabeformular anzeigen
-submitted, inputs = eingabeformular()
-
-# Nachträgliche Info anzeigen nach Übernahme
-if "nach_uebernahme_info" in st.session_state:
-    st.info(f"Daten von '{st.session_state.pop('nach_uebernahme_info')}' übernommen.")
-
 # Defaults ergänzen, falls Felder fehlen
 default_inputs = {
     "kaufpreis": 316000,
@@ -66,6 +42,29 @@ default_inputs = {
 for key in default_inputs:
     if key not in inputs:
         inputs[key] = default_inputs[key]
+
+# Sidebar: Immobilien-Liste mit Lade-/Löschfunktion
+st.sidebar.header("💾 Gespeicherte Immobilien")
+immos = liste_immobilien()
+
+for name in immos:
+    cols = st.sidebar.columns([0.75, 0.25])
+    if cols[0].button(name):
+        if st.sidebar.button(f"✅ Übernehmen '{name}'", key=f"confirm_{name}"):
+            st.session_state["uebernahme"] = lade_immobilie(name)
+            st.session_state["uebernahme_name"] = name
+            st.rerun()
+    if cols[1].button("🗑️", key=f"delete_{name}"):
+        if st.sidebar.button(f"⚠️ Löschen '{name}'", key=f"really_delete_{name}"):
+            loesche_immobilie(name)
+            st.rerun()
+
+# Eingabeformular anzeigen
+submitted, inputs = eingabeformular()
+
+# Nachträgliche Info anzeigen nach Übernahme
+if "nach_uebernahme_info" in st.session_state:
+    st.info(f"Daten von '{st.session_state.pop('nach_uebernahme_info')}' übernommen.")
 
 # Eingabe zum Speichern vorbereiten
 with st.form("speichern_formular"):
