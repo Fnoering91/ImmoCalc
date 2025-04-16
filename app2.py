@@ -27,12 +27,19 @@ for name in immos:
             st.rerun()
 
 # Eingabeformular anzeigen
+from modules.inputs import eingabeformular as standard_eingabe
+_, default_inputs = standard_eingabe()
 if "uebernahme" in st.session_state:
     uebernahme_daten = st.session_state.pop("uebernahme")
     st.session_state.update(uebernahme_daten)
     st.info(f"Daten von '{st.session_state.pop('uebernahme_name', 'unbekannt')}' übernommen.")
 
 submitted, inputs = eingabeformular()
+
+# Fehlende Felder mit Defaults ergänzen
+for key in default_inputs:
+    if key not in inputs:
+        inputs[key] = default_inputs[key]
 
 # Eingabe zum Speichern vorbereiten
 with st.form("speichern_formular"):
