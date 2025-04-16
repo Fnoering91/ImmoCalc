@@ -47,17 +47,33 @@ for key, value in default_inputs.items():
 st.sidebar.header("💾 Gespeicherte Immobilien")
 immos = liste_immobilien()
 
-for name in immos:
-    cols = st.sidebar.columns([0.75, 0.25])
-    if cols[0].button(name):
-        if st.sidebar.button(f"✅ Übernehmen '{name}'", key=f"confirm_{name}"):
-            st.session_state["uebernahme"] = lade_immobilie(name)
-            st.session_state["uebernahme_name"] = name
-            st.rerun()
-    if cols[1].button("🗑️", key=f"delete_{name}"):
-        if st.sidebar.button(f"⚠️ Löschen '{name}'", key=f"really_delete_{name}"):
-            loesche_immobilie(name)
-            st.rerun()
+st.sidebar.header("💾 Gespeicherte Immobilien")
+immos = liste_immobilien()
+
+if immos:
+    auswahl = st.sidebar.selectbox("📂 Immobilie laden", immos)
+
+    col1, col2 = st.sidebar.columns([0.6, 0.4])
+    if col1.button("✅ Übernehmen", key="übernehmen"):
+        st.session_state["uebernahme"] = lade_immobilie(auswahl)
+        st.session_state["uebernahme_name"] = auswahl
+        st.experimental_rerun()
+
+    if col2.button("🗑️ Löschen", key="löschen"):
+        loesche_immobilie(auswahl)
+        st.experimental_rerun()
+
+# for name in immos:
+#     cols = st.sidebar.columns([0.75, 0.25])
+#     if cols[0].button(name):
+#         if st.sidebar.button(f"✅ Übernehmen '{name}'", key=f"confirm_{name}"):
+#             st.session_state["uebernahme"] = lade_immobilie(name)
+#             st.session_state["uebernahme_name"] = name
+#             st.rerun()
+#     if cols[1].button("🗑️", key=f"delete_{name}"):
+#         if st.sidebar.button(f"⚠️ Löschen '{name}'", key=f"really_delete_{name}"):
+#             loesche_immobilie(name)
+#             st.rerun()
 
 # Eingabeformular anzeigen
 submitted, inputs = eingabeformular()
