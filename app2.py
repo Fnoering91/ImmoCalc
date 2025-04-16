@@ -26,9 +26,32 @@ for name in immos:
             loesche_immobilie(name)
             st.rerun()
 
+
 # Eingabeformular anzeigen
-from modules.inputs import eingabeformular as standard_eingabe
-_, default_inputs = standard_eingabe()
+
+# Eingabeformular anzeigen
+default_inputs = {
+    "kaufpreis": 316000,
+    "eigenkapital": 30000,
+    "zinssatz": 0.038,
+    "laufzeit_jahre": 25,
+    "nebenkosten_kauf": 0.07,
+    "wohnfläche": 56,
+    "kaltmiete": 16.0,
+    "mieterhoehung": 0.01,
+    "steuersatz": 0.42,
+    "nicht_umlagefaehige_kosten": 25.0,
+    "region": "Hamburg",
+    "stadtteil": "Bergedorf",
+    "annahme_wertsteigerung": 0.0,
+    "annahme_inflation": 0.01,
+    "exit_aktiv": False,
+    "exit_nach": 10,
+    "experteneinschaetzung_aktiv": False
+}
+
+# from modules.inputs import eingabeformular as standard_eingabe
+# _, default_inputs = standard_eingabe()
 if "uebernahme" in st.session_state:
     uebernahme_daten = st.session_state.pop("uebernahme")
     st.session_state.update(uebernahme_daten)
