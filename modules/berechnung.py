@@ -4,13 +4,13 @@ import pandas as pd
 def berechne_finanzierung(inputs):
     kaufpreis = inputs["kaufpreis"]
     eigenkapital = inputs["eigenkapital"]
-    zinssatz = inputs["zinssatz"]
+    zinssatz = inputs["zinssatz"]/100
     laufzeit_jahre = inputs["laufzeit_jahre"]
-    nebenkosten_kauf = inputs["nebenkosten_kauf"]
+    nebenkosten_kauf = inputs["nebenkosten_kauf"]/100
     wohnfläche = inputs["wohnfläche"]
     kaltmiete = inputs["kaltmiete"]
-    mieterhoehung = inputs["mieterhoehung"]
-    steuersatz = inputs["steuersatz"]
+    mieterhoehung = inputs["mieterhoehung"]/100
+    steuersatz = inputs["steuersatz"]/100
     nicht_umlagefaehige_kosten = inputs["nicht_umlagefaehige_kosten"]
 
     # Berechnungen
