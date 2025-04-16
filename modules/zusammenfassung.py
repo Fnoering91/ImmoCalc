@@ -39,7 +39,7 @@ def zeige_zusammenfassung(df, kpis, inputs):
         st.markdown(f"""
         <div style='text-align: left; padding: 0.2em 0;'>
             <div style='font-size: 0.85rem; color: #6c757d;'>{label}</div>
-            <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{wert:,.0f} €</div>
+            <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{steuervorteil:,.0f} €</div>
         </div>
         """, unsafe_allow_html=True)
     st.markdown("---")
