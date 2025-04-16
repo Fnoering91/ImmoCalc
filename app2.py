@@ -46,9 +46,6 @@ default_inputs = {
     "exit_nach": 10,
     "experteneinschaetzung_aktiv": False
 }
-
-# from modules.inputs import eingabeformular as standard_eingabe
-# _, default_inputs = standard_eingabe()
 if "uebernahme" in st.session_state:
     uebernahme_daten = st.session_state.pop("uebernahme")
     st.session_state.update(uebernahme_daten)
