@@ -36,7 +36,7 @@ default_inputs = {
     "wohnfläche": 56,
     "kaltmiete": 16.0,
     "mieterhoehung": 0.01,
-    "steuersatz": 0.42,
+    "steuersatz": 42,
     "nicht_umlagefaehige_kosten": 25.0,
     "region": "Hamburg",
     "stadtteil": "Bergedorf",
