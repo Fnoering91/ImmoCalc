@@ -7,7 +7,7 @@ def eingabeformular():
 
         col1, col2 = st.columns(2)
 
-         with col1:
+        with col1:
             kaufpreis = st.number_input("Kaufpreis (€)", min_value=10000, key="kaufpreis")
             eigenkapital = st.number_input("Eigenkapital (€)", min_value=0, step=10000, help="= Eigenkapital, welches den notwendigen Kreditrahmen reduziert", key="eigenkapital")
             zinssatz = st.number_input("Zinssatz (p.a.)", min_value=0.1, max_value=10.0, step=0.1, help="= Zinssatz für Kredit", key="zinssatz")
