@@ -1,24 +1,52 @@
-
 import streamlit as st
 from modules.inputs import eingabeformular
-from modules.berechnung import berechne_finanzierung
-from modules.berechnung import zeige_Finanzierungsplan
+from modules.berechnung import berechne_finanzierung, zeige_Finanzierungsplan
 from modules.zusammenfassung import zeige_zusammenfassung
 from modules.plots import plot_kaufpreis_vs_miete
 from modules.gpt_experte import experteneinschaetzung_gpt
 from modules.exit_berechnung import berechne_exit_option
-
+from modules.speicher import speichere_immobilie, lade_immobilie, liste_immobilien, loesche_immobilie
 
 st.set_page_config(page_title="Immobilien-Rechner", layout="centered")
 st.title("🏠 Immobilien-Investment Rechner")
 
+# Sidebar: Immobilien-Liste mit Lade-/Löschfunktion
+st.sidebar.header("💾 Gespeicherte Immobilien")
+immos = liste_immobilien()
+
+for name in immos:
+    cols = st.sidebar.columns([0.75, 0.25])
+    if cols[0].button(name):
+        if st.sidebar.confirm(f"Daten von '{name}' übernehmen?"):
+            st.session_state["uebernahme"] = lade_immobilie(name)
+            st.session_state["uebernahme_name"] = name
+            st.rerun()
+    if cols[1].button("🗑️", key=f"delete_{name}"):
+        if st.sidebar.confirm(f"'{name}' wirklich löschen?"):
+            loesche_immobilie(name)
+            st.rerun()
+
 # Eingabeformular anzeigen
+if "uebernahme" in st.session_state:
+    uebernahme_daten = st.session_state.pop("uebernahme")
+    st.session_state.update(uebernahme_daten)
+    st.info(f"Daten von '{st.session_state.pop('uebernahme_name', 'unbekannt')}' übernommen.")
+
 submitted, inputs = eingabeformular()
+
+# Eingabe zum Speichern vorbereiten
+with st.form("speichern_formular"):
+    immoname = st.text_input("Name für diese Immobilie eingeben:", key="immosave")
+    save_clicked = st.form_submit_button("💾 Immobilie speichern")
+
+if save_clicked and immoname:
+    speichere_immobilie(immoname, inputs)
+    st.success(f"'{immoname}' gespeichert.")
+    st.rerun()
 
 # Berechnung und Darstellung
 if submitted:
     df, kpis = berechne_finanzierung(inputs)
-    # st.subheader("Berechnungsergebnisse")
 
     with st.expander("## 📊 Zusammenfassung Vollfinanzierung"):
         zeige_zusammenfassung(df, kpis, inputs)
@@ -30,9 +58,8 @@ if submitted:
         st.markdown("---")
         with st.expander("## 📊 Zusammenfassung Exit-Option"):
             berechne_exit_option(inputs, df)
-    
+
     st.markdown("---")
-    # st.subheader("📈 Tragfähiger Kaufpreis je nach Mieteinnahme")
     with st.expander("## 📈 Tragfähiger Kaufpreis je nach Mieteinnahme"):
         plot_kaufpreis_vs_miete(
             zinssatz=inputs["zinssatz"],
