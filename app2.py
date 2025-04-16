@@ -46,9 +46,17 @@ default_inputs = {
     "exit_nach": 10,
     "experteneinschaetzung_aktiv": False
 }
+
 if "uebernahme" in st.session_state:
     uebernahme_daten = st.session_state.pop("uebernahme")
     st.session_state.update(uebernahme_daten)
+    st.info(f"Daten von '{st.session_state.pop('uebernahme_name', 'unbekannt')}' übernommen.")
+
+# Wenn Daten aus gespeicherter Immobilie geladen wurden, initialisiere Session State damit
+if "uebernahme" in st.session_state:
+    for key, value in st.session_state["uebernahme"].items():
+        st.session_state[key] = value
+    st.session_state.pop("uebernahme")
     st.info(f"Daten von '{st.session_state.pop('uebernahme_name', 'unbekannt')}' übernommen.")
 
 submitted, inputs = eingabeformular()
