@@ -39,9 +39,9 @@ default_inputs = {
     "experteneinschaetzung_aktiv": False
 }
 
-for key in default_inputs:
-    if key not in inputs:
-        inputs[key] = default_inputs[key]
+for key, value in default_inputs.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
 
 # Sidebar: Immobilien-Liste mit Lade-/Löschfunktion
 st.sidebar.header("💾 Gespeicherte Immobilien")
