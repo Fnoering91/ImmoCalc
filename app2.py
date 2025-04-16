@@ -12,10 +12,12 @@ st.title("🏠 Immobilien-Investment Rechner")
 
 # Früh prüfen, ob eine Übernahme im Gange ist, bevor das Formular gerendert wird
 if "uebernahme" in st.session_state:
-    for key, value in st.session_state.pop("uebernahme").items():
+    uebernommene_daten = st.session_state.pop("uebernahme")
+    for key, value in uebernommene_daten.items():
         st.session_state[key] = value
     st.session_state["nach_uebernahme_info"] = st.session_state.pop("uebernahme_name", "unbekannt")
-    st.rerun()
+    st.experimental_rerun()
+
 
 # Sidebar: Immobilien-Liste mit Lade-/Löschfunktion
 st.sidebar.header("💾 Gespeicherte Immobilien")
