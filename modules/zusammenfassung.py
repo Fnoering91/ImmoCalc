@@ -38,11 +38,6 @@ def zeige_zusammenfassung(df, kpis, inputs):
     with col21:
         preisproqm = inputs["kaufpreis"]/inputs["wohnfläche"]
         st.metric("Preis pro m²", f"{ preisproqm:,.0f} €", help="Kaufpreis pro Quadratmeter Wohnfläche")          
-        
-
-    with col22:
-        zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")            
 
         Kaufpreis_Miet_Verhältnis = inputs["kaufpreis"] / (inputs["kaltmiete"]*inputs["wohnfläche"]*12)
         farbe = "green" if Kaufpreis_Miet_Verhältnis <= 20 else "red" 
@@ -57,6 +52,10 @@ def zeige_zusammenfassung(df, kpis, inputs):
                 <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{Kaufpreis_Miet_Verhältnis:,.0f}</div>
             </div>
         """, unsafe_allow_html=True)
+
+    with col22:
+        zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
+        st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")                
     
     with col23:
         steuerquote = -df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
