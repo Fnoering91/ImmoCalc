@@ -10,36 +10,74 @@ from modules.speicher import speichere_immobilie, lade_immobilie, liste_immobili
 st.set_page_config(page_title="Immobilien-Rechner", layout="centered")
 st.title("🏠 Immobilien-Investment Rechner")
 
+# Früh prüfen, ob eine Übernahme im Gange ist, bevor das Formular gerendert wird
+if "uebernahme" in st.session_state:
+    uebernommene_daten = st.session_state.pop("uebernahme")
+    for key, value in uebernommene_daten.items():
+        st.session_state[key] = value
+    st.session_state["nach_uebernahme_info"] = st.session_state.pop("uebernahme_name", "unbekannt")
+    st.rerun()
+
+# Defaults ergänzen, falls Felder fehlen
+default_inputs = {
+    "kaufpreis": 316000,
+    "eigenkapital": 30000,
+    "zinssatz": 3.8,
+    "laufzeit_jahre": 25,
+    "nebenkosten_kauf": 7,
+    "wohnfläche": 56,
+    "kaltmiete": 16.0,
+    "mieterhoehung": 1,
+    "steuersatz": 42,
+    "nicht_umlagefaehige_kosten": 25.0,
+    "region": "Hamburg",
+    "stadtteil": "Bergedorf",
+    "annahme_wertsteigerung": 1,
+    "annahme_inflation": 1,
+    "exit_aktiv": False,
+    "exit_nach": 10,
+    "experteneinschaetzung_aktiv": False
+}
+
+for key, value in default_inputs.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
+
 # Sidebar: Immobilien-Liste mit Lade-/Löschfunktion
 st.sidebar.header("💾 Gespeicherte Immobilien")
 immos = liste_immobilien()
 
-for name in immos:
-    cols = st.sidebar.columns([0.75, 0.25])
-    if cols[0].button(name):
-        if st.sidebar.button(f"✅ Übernehmen '{name}'", key=f"confirm_{name}"):
-            st.session_state["uebernahme"] = lade_immobilie(name)
-            st.session_state["uebernahme_name"] = name
-            st.rerun()
-    if cols[1].button("🗑️", key=f"delete_{name}"):
-        if st.sidebar.button(f"⚠️ Löschen '{name}'", key=f"really_delete_{name}"):
-            loesche_immobilie(name)
-            st.rerun()
+if immos:
+    auswahl = st.sidebar.selectbox("📂 Immobilie laden", immos)
+
+    col1, col2 = st.sidebar.columns([0.6, 0.4])
+    if col1.button("✅ Übernehmen", key="übernehmen"):
+        st.session_state["uebernahme"] = lade_immobilie(auswahl)
+        st.session_state["uebernahme_name"] = auswahl
+        st.rerun()
+
+    if col2.button("🗑️ Löschen", key="löschen"):
+        loesche_immobilie(auswahl)
+        st.rerun()
+
+# for name in immos:
+#     cols = st.sidebar.columns([0.75, 0.25])
+#     if cols[0].button(name):
+#         if st.sidebar.button(f"✅ Übernehmen '{name}'", key=f"confirm_{name}"):
+#             st.session_state["uebernahme"] = lade_immobilie(name)
+#             st.session_state["uebernahme_name"] = name
+#             st.rerun()
+#     if cols[1].button("🗑️", key=f"delete_{name}"):
+#         if st.sidebar.button(f"⚠️ Löschen '{name}'", key=f"really_delete_{name}"):
+#             loesche_immobilie(name)
+#             st.rerun()
 
 # Eingabeformular anzeigen
-from modules.inputs import eingabeformular as standard_eingabe
-_, default_inputs = standard_eingabe()
-if "uebernahme" in st.session_state:
-    uebernahme_daten = st.session_state.pop("uebernahme")
-    st.session_state.update(uebernahme_daten)
-    st.info(f"Daten von '{st.session_state.pop('uebernahme_name', 'unbekannt')}' übernommen.")
-
 submitted, inputs = eingabeformular()
 
-# Fehlende Felder mit Defaults ergänzen
-for key in default_inputs:
-    if key not in inputs:
-        inputs[key] = default_inputs[key]
+# Nachträgliche Info anzeigen nach Übernahme
+if "nach_uebernahme_info" in st.session_state:
+    st.info(f"Daten von '{st.session_state.pop('nach_uebernahme_info')}' übernommen.")
 
 # Eingabe zum Speichern vorbereiten
 with st.form("speichern_formular"):

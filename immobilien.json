@@ -1,0 +1,21 @@
+{
+  "Beispiel Immobilie": {
+    "kaufpreis": 316000,
+    "eigenkapital": 30000,
+    "zinssatz": 0.038,
+    "laufzeit_jahre": 25,
+    "nebenkosten_kauf": 0.07,
+    "wohnfläche": 56,
+    "kaltmiete": 16.0,
+    "mieterhoehung": 0.01,
+    "steuersatz": 0.42,
+    "nicht_umlagefaehige_kosten": 25.0,
+    "region": "Hamburg",
+    "stadtteil": "Bergedorf",
+    "annahme_wertsteigerung": 0.0,
+    "annahme_inflation": 0.01,
+    "exit_aktiv": false,
+    "exit_nach": 10,
+    "experteneinschaetzung_aktiv": false
+  }
+}

@@ -24,17 +24,7 @@ def zeige_zusammenfassung(df, kpis, inputs):
         st.metric("Mieteinnahmen über Laufzeit", f"{ df["Mieteinnahmen"].sum():,.0f} €", help=" Mieteinnahmen über die gesamte Laufzeit")   
         
         steuervorteil = df["Steuerlicher Vorteil (real)"].sum()
-        # farbe = "inverse" if steuervorteil < 0 else "normal"  # inverse = grün bei negativen Werten
-        # delta_dummy = 0.01 if steuervorteil < 0 else -0.01  # winzig kleiner Wert zur Farbauslösung            
-        # st.metric("Steuervorteil über Laufzeit", f"{steuervorteil:,.0f} €", delta=f"{delta_dummy:.2f}", delta_color=farbe, help="Summe der jährlichen Steuervor- oder Nachteile. Negativ: Steuervorteil, Positiv: Steuernachteil")
-
         farbe = "green" if steuervorteil < 0 else "red" 
-        # st.markdown(f"""
-        # <div style='padding: 0.5em 1em; border: 1px solid #eee; border-radius: 0.5em; background-color: #f9f9f9;'>
-        #     <div style='font-size: 0.9rem; color: gray; margin-bottom: 0.3em;'>Steuervorteil über Laufzeit</div>
-        #     <div style='font-size: 1.6rem; font-weight: 600; color: {farbe};'>{steuervorteil:,.0f} €</div>
-        # </div>
-        # """, unsafe_allow_html=True)
 
         st.markdown(f"""
         <div style='text-align: left; padding: 0.2em 0;'>
@@ -42,16 +32,31 @@ def zeige_zusammenfassung(df, kpis, inputs):
             <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{steuervorteil:,.0f} €</div>
         </div>
         """, unsafe_allow_html=True)
+        
     st.markdown("---")
     col21, col22, col23 = st.columns(3)
     with col21:
         preisproqm = inputs["kaufpreis"]/inputs["wohnfläche"]
-        st.metric("Preis pro m²", f"{ preisproqm:,.0f} €", help="Kaufpreis pro Quadratmeter Wohnfläche")            
+        st.metric("Preis pro m²", f"{ preisproqm:,.0f} €", help="Kaufpreis pro Quadratmeter Wohnfläche")          
+
+        Kaufpreis_Miet_Verhältnis = inputs["kaufpreis"] / (inputs["kaltmiete"]*inputs["wohnfläche"]*12)
+        farbe = "green" if Kaufpreis_Miet_Verhältnis <= 20 else "red" 
+
+        st.markdown(f"""
+            <div style='text-align: left; padding: 0.2em 0;'>
+                <div style='font-size: 0.85rem; color: #6c757d;'>
+                    <span title="Verhältnis von Kaufpreis zu Jahresmiete – grober Indikator für Wirtschaftlichkeit. Unter 20 gilt oft als günstig.">
+                        Kaufpreis-Miet-Verhältnis ℹ️
+                    </span>
+                </div>
+                <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{Kaufpreis_Miet_Verhältnis:,.0f}</div>
+            </div>
+        """, unsafe_allow_html=True)
 
     with col22:
         zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")            
-
+        st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")                
+    
     with col23:
         steuerquote = -df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
         st.metric("Steuerquote", f"{ steuerquote*100:.1f} %", help="Anteil der Gesamtkosten, die durch Steuern reduziert werden können.")   
