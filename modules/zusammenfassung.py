@@ -75,10 +75,24 @@ def zeige_zusammenfassung(df, kpis, inputs):
         """, unsafe_allow_html=True)            
     
     with col23:
-        # steuerquote = -df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        # st.metric("Steuerquote", f"{ steuerquote*100:.1f} %", help="Anteil der Gesamtkosten, die durch Steuern reduziert werden können.")   
-        mietrendite = df["Mieteinnahmen"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        st.metric("Mietrendite", f"{ mietrendite*100:.1f} %", help="Verhältnis von Mieteinnahmen zu Gesamtkosten der Finanzierung.")   
+        steuerquote = -df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
+        st.metric("Steuerquote", f"{ steuerquote*100:.1f} %", help="Anteil der Gesamtkosten, die durch Steuern reduziert werden können.")   
+        # mietrendite = df["Mieteinnahmen"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
+        # st.metric("Mietrendite", f"{ mietrendite*100:.1f} %", help="Verhältnis von Mieteinnahmen zu Gesamtkosten der Finanzierung.") 
+
+        bruttomietrendite = df["Mieteinnahmen"][0]/inputs["kaufpreis"]
+        farbe = "green" if bruttomietrendite >= 0.05 else "red" 
+
+        st.markdown(f"""
+            <div style='text-align: left; padding: 0.2em 0;'>
+                <div style='font-size: 0.85rem; color: #6c757d;'>
+                    <span title="Verhältnis zwischen Jahresmiete (1. Jahr) und Kaufpreis. Sollte möglichst über 5% liegen. ">
+                        Bruttomietrendite [%] ℹ️
+                    </span>
+                </div>
+                <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{bruttomietrendite*100:,.1f}</div>
+            </div>
+        """, unsafe_allow_html=True) 
 
     st.markdown("---")
     col31, col32, col33 = st.columns(3)
