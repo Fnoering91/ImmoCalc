@@ -20,7 +20,7 @@ def plot_kaufpreis_vs_miete(
     a = (r * (1 + r)**n) / ((1 + r)**n - 1)
 
     miete_pro_m2 = np.linspace(miete_min, miete_max, schritte)
-    P = ((miete_pro_m2 - nebenkosten_mtl_pro_m2) * wohnfläche * 12 + eigenkapital * a) / (wohnfläche * (1 + nebenkosten_kauf) * a)
+    P = ((miete_pro_m2 - nebenkosten_mtl_pro_m2) * wohnfläche * 12 + eigenkapital * a) / (wohnfläche * (1 + nebenkosten_kauf) * a)*100
     kaufpreis_gesamt = P * wohnfläche
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
