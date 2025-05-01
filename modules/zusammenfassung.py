@@ -55,7 +55,21 @@ def zeige_zusammenfassung(df, kpis, inputs):
 
     with col22:
         zinslast = df["Zinskosten"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
-        st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")                
+        st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")     
+
+        tilgung_1st_year = df["Tilgung"][1]/(df["Restschuld"][1] + df["Tilgung"][1])
+        farbe = "green" if tilgung_1st_year <= 0.025 & tilgung_1st_year >= 0.015 else "red" 
+
+        st.markdown(f"""
+            <div style='text-align: left; padding: 0.2em 0;'>
+                <div style='font-size: 0.85rem; color: #6c757d;'>
+                    <span title="Tilgung sollte im ersten Jahr zwischen 1.5 und 2.5% liegen.">
+                        Tilgung im ersten Jahr [%] ℹ️
+                    </span>
+                </div>
+                <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{tilgung_1st_year*100:,.0f}</div>
+            </div>
+        """, unsafe_allow_html=True)            
     
     with col23:
         steuerquote = -df["Steuerlicher Vorteil (real)"].sum()/(df["Zinskosten"].sum() + df["Tilgung"].sum() + df["Nebenkosten"].sum())
