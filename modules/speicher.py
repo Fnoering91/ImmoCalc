@@ -10,7 +10,14 @@ sheet = client.open("Immobilien").sheet1  # oder .worksheet("Tabelle1")
 
 def lade_immobilien():
     rows = sheet.get_all_values()
-    return {row[0]: json.loads(row[1]) for row in rows if row[0] and row[1]}
+    immobilien = {}
+    for row in rows:
+        if len(row) >= 2 and row[0] and row[1]:
+            try:
+                immobilien[row[0]] = json.loads(row[1])
+            except json.JSONDecodeError:
+                st.warning(f"Ungültiger JSON-Wert in Zeile mit Schlüssel '{row[0]}'.")
+    return immobilien
 
 def speichere_immobilie(name, daten):
     immobilien = lade_immobilien()
