@@ -58,7 +58,7 @@ def zeige_zusammenfassung(df, kpis, inputs):
         st.metric("Zinslast gesamt", f"{ zinslast*100:.1f} %", help="Anteil der Zinskosten an den Gesamtkosten der Finanzierung")     
 
         tilgung_1st_year = df["Tilgung"][1]/(df["Restschuld"][1] + df["Tilgung"][1])
-        farbe = "green" if tilgung_1st_year <= 0.025 & tilgung_1st_year >= 0.015 else "red" 
+        farbe = "green" if tilgung_1st_year <= 0.025 AND tilgung_1st_year >= 0.015 else "red" 
 
         st.markdown(f"""
             <div style='text-align: left; padding: 0.2em 0;'>
