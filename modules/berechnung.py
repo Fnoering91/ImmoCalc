@@ -93,19 +93,19 @@ def zeige_Finanzierungsplan(df):
                     ),
                     "AfA": st.column_config.NumberColumn(
                         "AfA (€)",
-                        help="2 % Abschreibung auf 80 % des Kaufpreises"
+                        help="2 % Abschreibung auf 80 % des Kaufpreises. Steuerlich absetzbar."
                     ),
                     "Nebenkosten": st.column_config.NumberColumn(
                         "Nebenkosten (€)",
-                        help="Nicht umlagefähige Kosten (jährlich)"
+                        help="Nicht umlagefähige Kosten (jährlich). Steuerlich absetzbar. (Instandhaltungsrücklage, Verwaltergebühren, Mietausufallversicherung, Bankgebühren, Hausstrom, Treppenhausreinigung, etc.)"
                     ),
                     "Steuerlicher Vorteil (real)": st.column_config.NumberColumn(
-                        "Steuervorteil (€)",
-                        help="Verlust × Steuersatz"
+                        "Steuern (€)",
+                        help="(Mieteinnahmen - (Zinsen + Afa + Nebenkosten_real)) × Steuersatz. negativ: Steuervorteil, positiv: zusätzliche Steuerbelastung"
                     ),
                     "Reale Monatskosten": st.column_config.NumberColumn(
                         "Reale Monatskosten (€)",
-                        help="(Zinsen + Tilgung + Nebenkosten – Mieteinnahmen – Steuervorteil) / 12"
+                        help="(Zinsen + Tilgung + Nebenkosten – Mieteinnahmen + Steuern) / 12. "
                     ),
                     "Monatskosten (exkl. Steuervorteil)": st.column_config.NumberColumn(
                         "Monatskosten exkl. Steuervorteil (€)",
