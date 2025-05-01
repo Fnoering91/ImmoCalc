@@ -49,7 +49,7 @@ def zeige_zusammenfassung(df, kpis, inputs):
                         Kaufpreis-Miet-Verhältnis ℹ️
                     </span>
                 </div>
-                <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{Kaufpreis_Miet_Verhältnis:,.0f}</div>
+                <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{Kaufpreis_Miet_Verhältnis:,.1f}</div>
             </div>
         """, unsafe_allow_html=True)
 
@@ -67,7 +67,7 @@ def zeige_zusammenfassung(df, kpis, inputs):
                         Tilgung im ersten Jahr [%] ℹ️
                     </span>
                 </div>
-                <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{tilgung_1st_year*100:,.0f}</div>
+                <div style='font-size: 1.75rem; font-weight: 600; color: {farbe};'>{tilgung_1st_year*100:,.1f}</div>
             </div>
         """, unsafe_allow_html=True)            
     
